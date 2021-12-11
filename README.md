@@ -11,6 +11,22 @@
 - Enjeux de la simulation : Observation du déroulement de la partie (gagnants et perdants).
 
 ## Typologie des agents
+
+### Agent utilisateur
+- ID
+- tempête booléen
+- sécheresse booléen
+
+
+### Agent joueur
+- ID int
+- Nom String
+- Egoisme int
+- Intelligence int
+- Poissons int
+- Bois int
+- Liste de préferences []int
+
 ### Caractère (taux de 0 à 10)
 #### Egoïsme
 - 10 : le joueur est très égoïste, la priorité du joueur est de s'en sortir seul;
@@ -27,3 +43,5 @@ Réflexion d'autres traits de caractère :
 - Bricoleur : construit plus rapidement le radeau.
 
 ## Architecture logicielle 
+- Front-end en React
+- Back-end en Golang
