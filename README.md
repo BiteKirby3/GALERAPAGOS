@@ -35,7 +35,7 @@
 
 Réflexion d'autres traits de caractère :
 #### Intelligence 
-- 10 : le joueur joue de façon intelligente par rapport à sa situation;
+- 10 : le joueur joue de façon intelligente par rapport à sa situation
 - 0 : le joueur joue "mal"
 
 ### Capacités 
