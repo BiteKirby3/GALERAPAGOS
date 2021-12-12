@@ -41,31 +41,31 @@ Meteo :
 
 
 ### Agent = joueur
-#### Attribut
-	- ID int 
-	- nom String
-	- listeJoueurs []Joueur
-	- estMalade bool
-	- estMort bool
-	- listeCartes []Carte
-	- egoisme int (varie entre 0 et 10)
-	- intelligence int (varie entre 0 et 10)
-	- pecheur boolean
-	- bricoleur boolean
+#### Attributs
+- ID int 
+- nom String
+- listeJoueurs []Joueur
+- estMalade bool
+- estMort bool
+- listeCartes []Carte
+- egoisme int (varie entre 0 et 10)
+- intelligence int (varie entre 0 et 10)
+- pecheur boolean
+- bricoleur boolean
 #### Méthodes
-	- MAJNotesJoueur
-        - mettre à jour les notes des joueurs en fonction de leurs actions
-	- DemandeRessources
-		- cette méthode va permettre de demander à d'autres joueurs s'il peuvent et veulent partager un carte ressource (eau,nourriture,anti-venin)
-	- Jouer
-		- 4 actions possibles = pêcher, récupérer du bois, chercher de l'eau, chercher des ressources dans l'épave
-		- cette méthode appelera l'une de des deux fonctions suivantes (l'appel d'une de ces fonctions dépendra du nombre attribué en intelligence) :
-			- JoueurIntelligent
-				- une personne égoiste (egoisme > 5) aura plus tendance à chercher une nouvelle carte/ressource dans l'épave alors qu'une personne altruiste (egoisme < 5) aura plus tendance à chercher de l'eau, de la nourriture ou du bois pour le groupe
-			- JoueurAléatoirement
-				- comme son nom l'indique le joueur réalise une action au hasard
-	- NoteMax 
-		- le joueur vote pour l'adversaire avec la note la plus élevée
+- MAJNotesJoueur
+    - mettre à jour les notes des joueurs en fonction de leurs actions
+- DemandeRessources
+	- cette méthode va permettre de demander à d'autres joueurs s'il peuvent et veulent partager un carte ressource (eau,nourriture,anti-venin)
+- Jouer
+	- 4 actions possibles = pêcher, récupérer du bois, chercher de l'eau, chercher des ressources dans l'épave
+	- cette méthode appelera l'une de des deux fonctions suivantes (l'appel d'une de ces fonctions dépendra du nombre attribué en intelligence) :
+		- JoueurIntelligent
+			- une personne égoiste (egoisme > 5) aura plus tendance à chercher une nouvelle carte/ressource dans l'épave alors qu'une personne altruiste (egoisme < 5) aura plus tendance à chercher de l'eau, de la nourriture ou du bois pour le groupe
+		- JoueurAléatoirement
+			- comme son nom l'indique le joueur réalise une action au hasard
+- NoteMax 
+	- le joueur vote pour l'adversaire avec la note la plus élevée
 
 
 ### Agent = Epave
@@ -85,13 +85,13 @@ Meteo :
 - permet de savoir combien de place son disponible sur le radeau
 
 	
-### Agent StockEau
+### Agent = StockEau
 - permet de stocker l'eau du groupe
 
-### Agent StockNourriture
+### Agent = StockNourriture
 - permet de stocker la nourriture commune
 
-### Agent initialisateur
+### Agent = DebutJeu
 - permet de lancer les agents
 - demande le nombre de joueur à l'utilisateur et le premier joueur
 - initialise les notes des adversaires pour chaque joueur 
@@ -100,13 +100,13 @@ Meteo :
 Remarque : Le joueur choisit d'éliminer l'adversaire avec la note la plus élevée
 
 
-### Agent = GameManager
+### Agent = JeuManager
 - compte le nombre de tour
 - indique qui est le premier joueur
 - indique qui doit jouer
 - demande à l'agent RessourcesManager s'il faut déclencher la phase de vote
 
-### Agent = vote
+### Agent = Vote
 - récupère les votes
   - si égalité on demande au premier joueur de sélectionner un joueur
   - si le joueur choisi utilise ses cartes ressources il peut survivre
@@ -117,7 +117,7 @@ Remarque : Le joueur choisit d'éliminer l'adversaire avec la note la plus élev
 - Calcul la quantité d'eau et de nourriture à la fin du tour
 - Demande au joueurs s'ils veulent partager leurs ressources
 	
-### Agent utilisateur = Maitre du jeu
+### Agent = Utilisateur
 - Il s'agit d'un agent qui peut décide du nombre de joueur au départ et du joueur de départ. 
 - Il peut également modifier certains paramètre au cours du jeu :
 	- décider de l'arrivée de l'ouragan
