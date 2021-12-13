@@ -19,8 +19,8 @@
 
 Réflexion d'autres traits de caractère :
 #### Intelligence 
-- 10 : le joueur joue de façon intelligente par rapport à sa situation
-- 0 : le joueur joue "mal"
+- 10 : le joueur joue de façon intelligente par rapport à sa situation, effectue une action correspondant à la situation actuelle;
+- 0 : le joueur joue "mal" ne prenant pas en considération la situation.
 
 ### Capacités 
 - Pêcheur : ramène plus de poissons que la moyenne;
@@ -44,10 +44,10 @@ Meteo :
 #### Attributs
 - ID int 
 - nom String
-- listeJoueurs []Joueur
-- estMalade bool
+- prefs []Joueur
+- estMalade bool //pas implémentée pour l'instant
 - estMort bool
-- listeCartes []Carte
+- listeCartes []Carte //pas implémenté
 - egoisme int (varie entre 0 et 10)
 - intelligence int (varie entre 0 et 10)
 - pecheur boolean
@@ -61,6 +61,7 @@ Meteo :
 	- 4 actions possibles = pêcher, récupérer du bois, chercher de l'eau, chercher des ressources dans l'épave
 	- cette méthode appelera l'une de des deux fonctions suivantes (l'appel d'une de ces fonctions dépendra du nombre attribué en intelligence) :
 		- JoueurIntelligent
+			- une personne intelligente ne va pas chercher d'eau s'il y en a assez pour tout le monde,etc. 
 			- une personne égoiste (egoisme > 5) aura plus tendance à chercher une nouvelle carte/ressource dans l'épave alors qu'une personne altruiste (egoisme < 5) aura plus tendance à chercher de l'eau, de la nourriture ou du bois pour le groupe
 		- JoueurAléatoirement
 			- comme son nom l'indique le joueur réalise une action au hasard
@@ -77,14 +78,18 @@ Meteo :
 	
 
 ### Agent = Méteo
-- listeMeteo []Meteo
+- meteo est un int correspondant à la qté d'eau que les joueurs peuvent récupérer, il change à chaque tour:
+	- 0 : sécheresse
+	- 1 : soleil
+	- 2 : pluie
+	- 3 : orage
+	- 4 : ouragan (fin du jeu)!
 - permet de connaitre la quantité d'eau par tour
 - permet de savoir si c'est le tour de l'ouragan
 
 ### Agent = Radeau
 - permet de savoir combien de place son disponible sur le radeau
 
-	
 ### Agent = StockEau
 - permet de stocker l'eau du groupe
 
