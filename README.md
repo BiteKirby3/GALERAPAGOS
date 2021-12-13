@@ -19,8 +19,8 @@
 
 Réflexion d'autres traits de caractère :
 #### Intelligence 
-- 10 : le joueur joue de façon intelligente par rapport à sa situation
-- 0 : le joueur joue "mal"
+- 10 : le joueur joue de façon intelligente par rapport à sa situation, effectue une action correspondant à la situation actuelle;
+- 0 : le joueur joue "mal" ne prenant pas en considération la situation.
 
 ### Capacités 
 - Pêcheur : ramène plus de poissons que la moyenne;
@@ -44,10 +44,10 @@ Meteo :
 #### Attributs
 - ID int 
 - nom String
-- listeJoueurs []Joueur
-- estMalade bool
+- prefs []Joueur
+- estMalade bool //pas implémentée pour l'instant
 - estMort bool
-- listeCartes []Carte
+- listeCartes []Carte //pas implémenté
 - egoisme int (varie entre 0 et 10)
 - intelligence int (varie entre 0 et 10)
 - pecheur boolean
