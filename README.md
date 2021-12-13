@@ -61,6 +61,7 @@ Meteo :
 	- 4 actions possibles = pêcher, récupérer du bois, chercher de l'eau, chercher des ressources dans l'épave
 	- cette méthode appelera l'une de des deux fonctions suivantes (l'appel d'une de ces fonctions dépendra du nombre attribué en intelligence) :
 		- JoueurIntelligent
+			- une personne intelligente ne va pas chercher d'eau s'il y en a assez pour tout le monde,etc. 
 			- une personne égoiste (egoisme > 5) aura plus tendance à chercher une nouvelle carte/ressource dans l'épave alors qu'une personne altruiste (egoisme < 5) aura plus tendance à chercher de l'eau, de la nourriture ou du bois pour le groupe
 		- JoueurAléatoirement
 			- comme son nom l'indique le joueur réalise une action au hasard
