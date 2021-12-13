@@ -80,9 +80,9 @@ Meteo :
 ### Agent = Méteo
 - meteo est un int correspondant à la qté d'eau que les joueurs peuvent récupérer, il change à chaque tour:
 	- 0 : sécheresse
-	- 1 : petite pluie
+	- 1 : soleil
 	- 2 : pluie
-	- 3 : gros orage
+	- 3 : orage
 	- 4 : ouragan (fin du jeu)!
 - permet de connaitre la quantité d'eau par tour
 - permet de savoir si c'est le tour de l'ouragan
