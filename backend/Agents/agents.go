@@ -6,10 +6,12 @@ import (
 )
 
 type Joueur struct {
-	ID        string
+	ID        int
+	nom       string
 	egoisme   int // de 0 à 10 si 10 : joueur très égoiste!
 	pecheur   bool
 	bricoleur bool
+	estMort   bool
 	prefs     []Joueur
 }
 
@@ -17,14 +19,15 @@ func MakePrefs(j Joueur, autres []Joueur) (prefs []Joueur) {
 	//TODO : selon le caractère de j et le caractère des autres joueurs faire une liste de pref
 	return autres
 }
-func NewJoeurEgoiste(id string) Joueur {
+
+func NewJoeurEgoiste(id int, nom string) Joueur {
 	var prefs []Joueur
-	return Joueur{id, 10, false, false, prefs}
+	return Joueur{id, nom, 10, false, false, false, prefs}
 }
 
-func NewJoueurAltruiste(id string) Joueur {
+func NewJoueurAltruiste(id int, nom string) Joueur {
 	var prefs []Joueur
-	return Joueur{id, 0, false, false, prefs}
+	return Joueur{id, nom, 0, false, false, false, prefs}
 }
 
 func CheckJoueurs(joueurs []Joueur) error {
