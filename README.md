@@ -109,16 +109,16 @@ Remarque : Le joueur choisit d'éliminer l'adversaire avec la note la plus élev
 ### Agent = Vote
 - récupère les votes
   - si égalité on demande au premier joueur de sélectionner un joueur
-  - si le joueur choisi utilise ses cartes ressources il peut survivre
+  - si le joueur utilise ses cartes ressources il peut survivre
   - sinon le joueur décède 
 
 
 ### Agent = RessourcesManager
-- Calcul la quantité d'eau et de nourriture à la fin du tour
-- Demande au joueurs s'ils veulent partager leurs ressources
+- Calcule la quantité d'eau et de nourriture à la fin du tour
+- Demande aux joueurs s'ils veulent partager leurs ressources
 	
 ### Agent = Utilisateur
-- Il s'agit d'un agent qui peut décide du nombre de joueur au départ et du joueur de départ. 
+- Il s'agit d'un agent qui peut décider du nombre de joueur au départ et du joueur de départ. 
 - Il peut également modifier certains paramètre au cours du jeu :
 	- décider de l'arrivée de l'ouragan
 	- choisir la quantité d'eau qui peut-être récupérée au prochain tour
