@@ -3,10 +3,6 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import HomeForm from './components/homeForm'
 
-function handleSubmit(){
-  console.log("hello");
-}
-
 export default function Home() {
   return (
     <div className={styles.container}>
