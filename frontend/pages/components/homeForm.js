@@ -15,7 +15,7 @@ class HomeForm extends React.Component {
     handleChangeNbPlayers(event) {    this.setState({nbPlayers: event.target.value});  }
     handleChangeNbTurns(event) {    this.setState({nbTurns: event.target.value});  }
     handleSubmit(event) {
-      alert('Nombre de joueurs : ' + this.state.nbPlayers+'Nombre de tours : ' + this.state.nbTurns);
+      alert('Nombre de joueurs : ' + this.state.nbPlayers+"\n"+'Nombre de tours : ' + this.state.nbTurns);
       event.preventDefault();
     }
   
