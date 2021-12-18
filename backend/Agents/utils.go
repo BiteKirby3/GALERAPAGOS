@@ -51,7 +51,17 @@ func InitJeu(nbJ int, nbTour int) Jeu {
 		nourriture = 20
 		eau = 24
 	}
-	return Jeu{rand.Intn(4), eau, nourriture, 0, 0, nbTour, 1}
+	return Jeu{rand.Intn(4), eau, nourriture, 0, 0, nbTour, 0}
+}
+
+func NewDay(j Jeu) Jeu {
+	j.TourActuel = j.TourActuel + 1
+	if j.NbTour == j.TourActuel {
+		j.Meteo = 4
+	} else {
+		j.Meteo = rand.Intn(4)
+	}
+	return j
 }
 
 func CheckTours(nbTours int) error {
