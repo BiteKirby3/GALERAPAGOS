@@ -3,6 +3,7 @@ package Agents
 import (
 	"errors"
 	"fmt"
+	"math"
 )
 
 type Joueur struct {
@@ -16,7 +17,7 @@ type Joueur struct {
 }
 
 //Constructeurs
-func NewJoeurEgoiste(id int, nom string) Joueur {
+func NewJoueurEgoiste(id int, nom string) Joueur {
 	var prefs []Joueur
 	return Joueur{id, nom, 10, false, false, false, prefs}
 }
@@ -91,7 +92,21 @@ func MakePrefs(j Joueur, autres []Joueur) (prefs []Joueur) {
 	return autres
 }
 
-func Joue(j Joueur, plateau Jeu) {
-	//TODO en fonction des caractéristiques du joueur et du plateau, que fait le joueur?
-	return
+//Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur
+//l'action ayant le meilleure score (celui le plus proche de 1) est celle qui est effectuée par le joueur
+func Joue(j Joueur, plateau Jeu) Jeu {
+	//TODO en fonction des caractéristiques du joueur et du plateau, calculer les score du joueur 
+	scorepeche := GetScorePeche(j, plateau)
+	scoreeau := GetScoreEau(j, plateau)
+	scorebois := GetScoreBois(j, plateau)
+	scoremax := math.Max(math.Max(scorebois, scorepeche), scoreeau)
+	switch scoremax {
+	case scorebois:
+		plateau.StockBois += ConstructionRadeau(j)
+	case scoreeau:
+		plateau.StockEau += ChercherEau(plateau.Meteo)
+	case scorepeche:
+		plateau.StockNourriture += Pecher(j)
+	}
+	return plateau
 }
