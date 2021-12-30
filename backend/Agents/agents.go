@@ -95,7 +95,7 @@ func MakePrefs(j Joueur, autres []Joueur) (prefs []Joueur) {
 //Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur
 //l'action ayant le meilleure score (celui le plus proche de 1) est celle qui est effectuée par le joueur
 func Joue(j Joueur, plateau Jeu) Jeu {
-	//TODO en fonction des caractéristiques du joueur et du plateau, calculer les score du joueur 
+	//TODO en fonction des caractéristiques du joueur et du plateau, calculer les score du joueur
 	scorepeche := GetScorePeche(j, plateau)
 	scoreeau := GetScoreEau(j, plateau)
 	scorebois := GetScoreBois(j, plateau)

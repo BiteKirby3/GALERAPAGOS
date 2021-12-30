@@ -61,7 +61,7 @@ func main() {
 				*/
 				for i := 1; i <= nbjoueursvivants; i++ {
 					fmt.Println(joueurjouant.Nom, ", c'est à toi !")
-					//TODO : SES ACTIONS
+					//TODO : SES ACTIONS au dernier tour
 					joueurjouant = Agents.AuTourDe(joueurs, joueurjouant)
 				}
 			}
