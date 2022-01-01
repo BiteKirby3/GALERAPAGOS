@@ -84,11 +84,11 @@ handleChangeIntelligence(event, index){
     }
     return (
       <div className="home">
-        <PageDescription url_img={process.env.PUBLIC_URL + "/actions.jpg"} page_title={"     TO ADD : ................."} descr_text={"    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, \nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore \neu fugiat nulla pariatur. Excepteur sint occaecat cupidatat \nnon proident, sunt in culpa qui officia deserunt mollit anim id est\n laborum."} />
+        <PageDescription url_img={process.env.PUBLIC_URL + "/actions.jpg"} page_title={"Joueurs"} descr_text={"Veuillez saisir les informations concernant les joueurs :"} />
         <div className="scrollmenu">
                 {Array.from({length: this.state.nbPlayers},(_, i) => (
                     <div key={i}>
-                        Players {i+1} :
+                        Joueur {i+1} :
                         <p>
                         <label>
                             Nom : <input type="text" value={this.state.players[i].name} onChange={event => this.handleChangeName(event, i)} />     
