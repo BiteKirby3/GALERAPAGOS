@@ -1,0 +1,26 @@
+nav{
+    background-color: #5D5243;
+}
+
+.navbar-brand{
+    color: #E8A336 !important ;
+    white-space: normal;
+}
+
+.navbar-brand .title{
+    font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    font-size: 28px;
+}
+
+.navbar-brand .slogan{
+    font-size:  24px;
+    font-family: 'Copperplate Gothic Light', sans-serif;
+}
+
+.nav-link{
+    font-family: 'Roboto', sans-serif;
+}
+
+nav .container{
+    display : inline !important;
+}
