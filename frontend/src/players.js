@@ -1,7 +1,7 @@
 import React from "react";
 import PageDescription from "./pageDescription";
 import { NavLink } from "react-router-dom";
-import styles from './players.css';
+import './players.css';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const ROLE_FISHERMAN = "fisherman"
@@ -85,7 +85,7 @@ handleChangeIntelligence(event, index){
     return (
       <div className="home">
         <PageDescription url_img={process.env.PUBLIC_URL + "/actions.jpg"} page_title={"     TO ADD : ................."} descr_text={"    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, \nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore \neu fugiat nulla pariatur. Excepteur sint occaecat cupidatat \nnon proident, sunt in culpa qui officia deserunt mollit anim id est\n laborum."} />
-        <div className={styles.scrollmenu}>
+        <div className="scrollmenu">
                 {Array.from({length: this.state.nbPlayers},(_, i) => (
                     <div key={i}>
                         Players {i+1} :

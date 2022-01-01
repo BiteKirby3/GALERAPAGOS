@@ -19,6 +19,7 @@ code {
 .home {
   margin-left: 5%;
   margin-right: 5%;
+  min-height: 600px;
 }
 
 
