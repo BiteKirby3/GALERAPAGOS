@@ -18,7 +18,8 @@ class Players extends React.Component {
     this.state = {
         players : players,
         nbPlayers : 0,
-    };
+        gotNbPlayers : false,
+    };    
     
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeSelfishness = this.handleChangeSelfishness.bind(this);
@@ -38,6 +39,16 @@ componentWillMount() {
     client.onmessage = (message) => {
       var obj = JSON.parse(message.data)
       this.setState({nbPlayers : obj.nbPlayers});
+      for (var i = 0; i < this.state.nbPlayers; i++) {
+        this.state.players.push({
+            id : i,
+            name : "",
+            role : ROLE_NONE,
+            selfishness : 0, 
+            intelligence : 0,   
+        });
+    }
+      this.setState({gotNbPlayers : true})
     };
   }
 
@@ -73,20 +84,12 @@ handleChangeIntelligence(event, index){
 }
 
   render() {
-    for (var i = 0; i < this.state.nbPlayers; i++) {
-        this.state.players.push({
-            id : i,
-            name : "",
-            role : ROLE_NONE,
-            selfishness : 0, 
-            intelligence : 0,   
-        });
-    }
     return (
       <div className="home">
         <PageDescription url_img={process.env.PUBLIC_URL + "/actions.jpg"} page_title={"Joueurs"} descr_text={"Veuillez saisir les informations concernant les joueurs :"} />
         <div className="scrollmenu">
-                {Array.from({length: this.state.nbPlayers},(_, i) => (
+        {this.state.gotNbPlayers ? (
+                Array.from({length: this.state.nbPlayers},(_, i) => (
                     <div key={i}>
                         Joueur {i+1} :
                         <p>
@@ -113,9 +116,8 @@ handleChangeIntelligence(event, index){
                                 Intelligence : <input type="number" value={this.state.players[i].intelligence}  min={0} max={10} step={1} onChange={event => this.handleChangeIntelligence(event, i)}/>   
                             </label>
                         </p>
-
                 </div>
-                ))     
+                ))     ):(<div></div>)
                 }
             </div>
           <NavLink className="nav-link" to="/simulation">
