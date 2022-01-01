@@ -2,6 +2,7 @@ import React from "react";
 import PageDescription from "./pageDescription";
 import { NavLink } from "react-router-dom";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import './players.css';
 
 const client = new W3CWebSocket('ws://127.0.0.1:5000');
 
@@ -53,7 +54,7 @@ class Home extends React.Component {
             Nombre de tours : <input type="number" step={1} min={2} max={20} value={this.state.nbTurns} onChange={this.handleChangeNbTurns} />    
           </label>
           <NavLink className="nav-link" to={{ pathname:'/players', state: {nbPlayers: this.state.nbPlayers, nbTurns:this.state.nbTurns} }}>
-              <input type="submit" value="Suivant" onClick={this.handleClick}/>
+              <input className="button1" type="submit" value="Suivant" onClick={this.handleClick}/>
           </NavLink> 
           </p>
     </div>

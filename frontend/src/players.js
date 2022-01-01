@@ -121,7 +121,7 @@ handleChangeIntelligence(event, index){
                 }
             </div>
           <NavLink className="nav-link" to="/simulation">
-              <input type="submit" value="Lancer Simulation" onClick={this.handleSubmit}/>
+              <input className="button1" type="submit" value="Lancer Simulation" onClick={this.handleSubmit}/>
           </NavLink>   
     </div>
     );
