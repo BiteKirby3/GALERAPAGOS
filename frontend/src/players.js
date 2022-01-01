@@ -99,7 +99,7 @@ handleChangeIntelligence(event, index){
                             Rôle : <select value={this.state.players[i].role} onChange={event => this.handleChangeRole(event, i)}>
                                 <option defaultValue={ROLE_NONE}>Rien</option>
                                 <option value={ROLE_FISHERMAN}>Pêcheur</option>
-                                <option value={ROLE_HANDYMAN}>Bricoloeur</option>
+                                <option value={ROLE_HANDYMAN}>Bucheron</option>
                             </select>    
                         </label>
                         </p>
