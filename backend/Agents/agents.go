@@ -88,17 +88,39 @@ func AuTourDe(joueurs []Joueur, premier Joueur) (j Joueur) {
 }
 
 func MakePrefs(j Joueur, autres []Joueur) (prefs []Joueur) {
-	//TODO : selon le caractère de j et le caractère des autres joueurs faire une liste de pref
-	return autres
+	var joueurIndice int
+	for i, val := range autres {
+		if j.ID == val.ID {
+			joueurIndice = i
+		}
+	}
+	precedentIndice := joueurIndice - 1
+	if precedentIndice == -1 {
+		precedentIndice = len(autres) - 1
+	}
+	suivantIndice := joueurIndice + 1
+	if suivantIndice == len(autres) {
+		suivantIndice = 0
+	}
+	j.Prefs[0] = autres[precedentIndice]
+	j.Prefs[1] = autres[suivantIndice]
+	cpt := 2
+	for i, val := range autres {
+		if (i != suivantIndice) && (i != joueurIndice) && (i != precedentIndice) {
+			j.Prefs[cpt] = val
+			cpt++
+		}
+	}
+	return j.Prefs
 }
 
 //Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur
 //l'action ayant le meilleure score est celle qui est effectuée par le joueur
 func Joue(j Joueur, plateau Jeu, nbjoueurs int, joueurs Joueur) Jeu {
 	//TODO en fonction des caractéristiques du joueur et du plateau, calculer les score du joueur
-	scorepeche := GetScorePeche(j, plateau, nbjoueurs)
-	scoreeau := GetScoreEau(j, plateau, nbjoueurs)
-	scorebois := GetScoreBois(j, plateau, nbjoueurs)
+	scorepeche := float64(GetScorePeche(j, plateau, nbjoueurs))
+	scoreeau := float64(GetScoreEau(j, plateau, nbjoueurs))
+	scorebois := float64(GetScoreBois(j, plateau, nbjoueurs))
 	scoremax := math.Max(math.Max(scorebois, scorepeche), scoreeau)
 	switch scoremax {
 	case scorebois:
