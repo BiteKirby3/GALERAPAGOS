@@ -7,24 +7,25 @@ import (
 )
 
 type Joueur struct {
-	ID        int
-	Nom       string
-	Egoisme   int // de 0 à 10 si 10 : joueur très égoiste!
-	Pecheur   bool
-	Bricoleur bool
-	EstMort   bool
-	Prefs     []Joueur
+	ID           int
+	Nom          string
+	Egoisme      int // de 0 à 10 si 10 : joueur très égoiste!
+	Intelligence int // de 0 à 10 si 10 : joueur très intelligent!
+	Pecheur      bool
+	Bucheron     bool
+	EstMort      bool
+	Prefs        []Joueur
 }
 
 //Constructeurs
 func NewJoueurEgoiste(id int, nom string) Joueur {
 	var prefs []Joueur
-	return Joueur{id, nom, 10, false, false, false, prefs}
+	return Joueur{id, nom, 10, 0, false, false, false, prefs}
 }
 
 func NewJoueurAltruiste(id int, nom string) Joueur {
 	var prefs []Joueur
-	return Joueur{id, nom, 0, false, false, false, prefs}
+	return Joueur{id, nom, 0, 0, false, false, false, prefs}
 }
 
 //Vérification des attributs
@@ -34,7 +35,7 @@ func CheckJoueurs(joueurs []Joueur) error {
 		return errors.New(err)
 	}
 	for _, j := range joueurs {
-		if j.Pecheur && j.Bricoleur {
+		if j.Pecheur && j.Bucheron {
 			err := fmt.Sprint("Le joueur ", j.ID, " ne peut pas être pêcheur ET bricoleur.")
 			return errors.New(err)
 		}
@@ -53,7 +54,7 @@ func DevientPecheur(j Joueur) Joueur {
 }
 
 func DevientBricoleur(j Joueur) Joueur {
-	j.Bricoleur = true
+	j.Bucheron = true
 	return j
 }
 
