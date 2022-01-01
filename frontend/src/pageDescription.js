@@ -1,4 +1,5 @@
 import React from "react";
+import './pageDescription.css';
 
 
 class PageDescription extends React.Component {
@@ -13,17 +14,17 @@ class PageDescription extends React.Component {
 
     render() {         
         return (
-            <div class="description">
-                    <img
-                        class="page_image"
-                        src={this.state.url_img}
-                        alt=""
-                    />
-            <pre>
-                <h1 class="font-weight-light">{this.state.page_title}</h1>
-                {this.state.descr_text}
-            </pre>
-        </div>
+            <div className="description">
+                <img
+                    className="page_image"
+                    src={this.state.url_img}
+                    alt=""
+                />
+                <div>
+                    <h1 className="font-weight-light">{this.state.page_title}</h1>
+                        {this.state.descr_text}
+                </div>
+            </div>
         );
     }
 }

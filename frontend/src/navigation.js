@@ -14,10 +14,12 @@ function Navigation() {
     <div className="navigation">
       <nav className="navbar navbar-expand navbar-dark">
         <div className="container">
-          <NavLink className="navbar-brand" to="/">
-          <p className="title">A21-IA04-Projet : Simulation d'un jeu de société — Galèrapagos </p>
-          <p className="slogan">Coopérer pour lutter mais trahir pour gagner ! </p>
-          </NavLink>
+          <div>
+            <NavLink className="navbar-brand" to="/">
+            <p className="title">A21-IA04-Projet : Simulation d'un jeu de société — Galèrapagos </p>
+            <p className="slogan">Coopérer pour lutter mais trahir pour gagner ! </p>
+            </NavLink>
+          </div>
           <div>
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">

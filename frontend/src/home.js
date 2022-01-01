@@ -44,7 +44,7 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home">
-        <PageDescription url_img={process.env.PUBLIC_URL + "/player.jpg"} page_title={"     Après le naufrage de votre bateau ..."} descr_text={"    votre groupe de survivants se retrouve sur une île déserte où l’eau \net la nourriture se font rares. Seule solution pour échapper à ce cauchemar : \nconstruire ensemble un grand radeau pour embarquer les survivants, \nmais le temps presse car un ouragan pointe à l’horizon..."} />
+        <PageDescription url_img={process.env.PUBLIC_URL + "/player.jpg"} page_title={"Après le naufrage de votre bateau..."} descr_text={"    votre groupe de survivants se retrouve sur une île déserte où l’eau \net la nourriture se font rares. Seule solution pour échapper à ce cauchemar : \nconstruire ensemble un grand radeau pour embarquer les survivants, \nmais le temps presse car un ouragan pointe à l’horizon..."} />
           <p>
           <label>
             Nombre de joueurs : <input type="number" step={1} min={3} max={12} value={this.state.nbPlayers} onChange={this.handleChangeNbPlayers} />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   

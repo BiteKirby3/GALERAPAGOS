@@ -10,7 +10,7 @@ function Player() {
 
   return (
     <div className="home">
-      <div class="container">
+      <div className="container">
         <h1 className="mt-5">This is a Player Title</h1>
         <h6 className="mb-5">The player slug is, {postSlug}</h6>
         <p>

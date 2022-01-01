@@ -4,6 +4,7 @@ nav{
 
 .navbar-brand{
     color: #E8A336 !important ;
+    white-space: normal;
 }
 
 .navbar-brand .title{
@@ -18,4 +19,8 @@ nav{
 
 .nav-link{
     font-family: 'Roboto', sans-serif;
+}
+
+nav .container{
+    display : inline !important;
 }
