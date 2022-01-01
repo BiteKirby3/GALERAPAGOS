@@ -24,7 +24,7 @@ Réflexion d'autres traits de caractère :
 
 ### Capacités 
 - Pêcheur : ramène plus de poissons que la moyenne;
-- Bricoleur : construit plus rapidement le radeau.
+- bûcheron : coupe le bois plus rapidement le radeau.
 
 ## Description des agents
 Joueur :
@@ -51,7 +51,7 @@ Meteo :
 - egoisme int (varie entre 0 et 10)
 - intelligence int (varie entre 0 et 10)
 - pecheur boolean
-- bricoleur boolean
+- bûcheron boolean
 #### Méthodes
 - MAJNotesJoueur
     - mettre à jour les notes des joueurs en fonction de leurs actions
@@ -75,6 +75,9 @@ Meteo :
 
 ### Agent = Bois
 - quand un joueur l'interroge il retourne une quantité de bois (entre 1 et 5) ou si le joueur tombe malade(dans ce cas il ne reçoit pas de bois) 
+
+### Agent = Pêche
+- quand un joueur l'interroge il retourne une quantité de poissons (entre 0 et 3)
 	
 
 ### Agent = Méteo
@@ -100,7 +103,7 @@ Meteo :
 - permet de lancer les agents
 - demande le nombre de joueur à l'utilisateur et le premier joueur
 - initialise les notes des adversaires pour chaque joueur 
-(retirer 1 pour pecheur et bricoleur // le joueur précedent et suivant reçoivent respectivement un +2 et +1)
+(retirer 1 pour pecheur et bûcheron // le joueur précedent et suivant reçoivent respectivement un +2 et +1)
 
 Remarque : Le joueur choisit d'éliminer l'adversaire avec la note la plus élevée
 
