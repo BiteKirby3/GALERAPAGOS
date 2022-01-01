@@ -14,18 +14,13 @@ type Joueur struct {
 	Pecheur      bool
 	Bucheron     bool
 	EstMort      bool
-	Prefs        []Joueur
+	Prefs        []int
 }
 
 //Constructeurs
-func NewJoueurEgoiste(id int, nom string) Joueur {
-	var prefs []Joueur
-	return Joueur{id, nom, 10, 0, false, false, false, prefs}
-}
-
-func NewJoueurAltruiste(id int, nom string) Joueur {
-	var prefs []Joueur
-	return Joueur{id, nom, 0, 0, false, false, false, prefs}
+func NewJoueur(id int, intelligence int, nom string) Joueur {
+	var prefs []int
+	return Joueur{id, nom, 10, intelligence, false, false, false, prefs}
 }
 
 //Vérification des attributs
@@ -88,7 +83,7 @@ func AuTourDe(joueurs []Joueur, premier Joueur) (j Joueur) {
 	return j
 }
 
-func MakePrefs(j Joueur, autres []Joueur) (prefs []Joueur) {
+func MakePrefs(j Joueur, autres []Joueur) (prefs []int) {
 	var joueurIndice int
 	for i, val := range autres {
 		if j.ID == val.ID {
@@ -103,21 +98,20 @@ func MakePrefs(j Joueur, autres []Joueur) (prefs []Joueur) {
 	if suivantIndice == len(autres) {
 		suivantIndice = 0
 	}
-	j.Prefs[0] = autres[precedentIndice]
-	j.Prefs[1] = autres[suivantIndice]
-	cpt := 2
+	j.Prefs = append(j.Prefs, autres[precedentIndice].ID)
+	j.Prefs = append(j.Prefs, autres[suivantIndice].ID)
 	for i, val := range autres {
 		if (i != suivantIndice) && (i != joueurIndice) && (i != precedentIndice) {
-			j.Prefs[cpt] = val
-			cpt++
+			j.Prefs = append(j.Prefs, val.ID)
 		}
 	}
+	return j.Prefs
 	return j.Prefs
 }
 
 //Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur
 //l'action ayant le meilleure score est celle qui est effectuée par le joueur
-func Joue(j Joueur, plateau Jeu, nbjoueurs int, joueurs Joueur) Jeu {
+func Joue(plateau Jeu, j Joueur, nbjoueurs int) Jeu {
 	//TODO en fonction des caractéristiques du joueur et du plateau, calculer les score du joueur
 	scorepeche := float64(GetScorePeche(j, plateau, nbjoueurs))
 	scoreeau := float64(GetScoreEau(j, plateau, nbjoueurs))
@@ -126,6 +120,11 @@ func Joue(j Joueur, plateau Jeu, nbjoueurs int, joueurs Joueur) Jeu {
 	switch scoremax {
 	case scorebois:
 		plateau.StockBois += ConstructionRadeau(j)
+		if plateau.StockBois >= 6 {
+			nbPlaces := plateau.StockBois / 6
+			plateau.PlaceRadeau += nbPlaces
+			plateau.StockBois = plateau.StockBois - (nbPlaces * 6)
+		}
 	case scoreeau:
 		plateau.StockEau += ChercherEau(plateau.Meteo)
 	case scorepeche:

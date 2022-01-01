@@ -1,6 +1,8 @@
 package Agents
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 func Pecher(j Joueur) int {
 	poisson := rand.Intn(4) * 2
