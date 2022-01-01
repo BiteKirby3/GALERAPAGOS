@@ -2,38 +2,51 @@ import React from "react";
 import PageDescription from "./pageDescription";
 import { NavLink } from "react-router-dom";
 import styles from './players.css';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const ROLE_FISHERMAN = "fisherman"
 const ROLE_HANDYMAN = "handyman"
 const ROLE_NONE = "none"
 
+const client = new W3CWebSocket('ws://127.0.0.1:5000');
+
 class Players extends React.Component {
   constructor(props) {
     super(props);
-    //console.log(this.props.location);
     const players = []
-    for (var i = 0; i < this.props.nbPlayers; i++) {
-        players.push({
-            id : i,
-            name : "",
-            role : ROLE_NONE,
-            selfishness : 0, 
-            intelligence : 0,   
-        });
-    }
+
     this.state = {
-        players  
+        players : players,
+        nbPlayers : 0,
     };
+    
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeSelfishness = this.handleChangeSelfishness.bind(this);
     this.handleChangeIntelligence = this.handleChangeIntelligence.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    client.send(JSON.stringify({
+        fromPage : "players_connexion",
+      }));
 }
 
+//websocket
+componentWillMount() {
+    client.onopen = () => {
+      console.log('Client : WebSocket Client Connected');
+    };
+    client.onmessage = (message) => {
+      var obj = JSON.parse(message.data)
+      this.setState({nbPlayers : obj.nbPlayers});
+    };
+  }
 
 handleSubmit(event) {
-    event.preventDefault();
-    this.props.onSubmit(this.state.players);
+    console.log("redirect to simulation")
+    client.send(JSON.stringify({
+      fromPage : "players",
+      players : this.state.players
+    }));
   }
 
 updatePlayer(index, attributes){
@@ -43,7 +56,7 @@ updatePlayer(index, attributes){
         ...attributes
     }
     players[index] = player;
-    this.setState({players});
+    this.setState({players : players});
 }
 
 handleChangeName(event, index){
@@ -60,12 +73,20 @@ handleChangeIntelligence(event, index){
 }
 
   render() {
-    console.log(this.props);
+    for (var i = 0; i < this.state.nbPlayers; i++) {
+        this.state.players.push({
+            id : i,
+            name : "",
+            role : ROLE_NONE,
+            selfishness : 0, 
+            intelligence : 0,   
+        });
+    }
     return (
       <div className="home">
         <PageDescription url_img={process.env.PUBLIC_URL + "/actions.jpg"} page_title={"     TO ADD : ................."} descr_text={"    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, \nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore \neu fugiat nulla pariatur. Excepteur sint occaecat cupidatat \nnon proident, sunt in culpa qui officia deserunt mollit anim id est\n laborum."} />
         <div className={styles.scrollmenu}>
-                {Array.from({length: this.props.nbPlayers},(_, i) => (
+                {Array.from({length: this.state.nbPlayers},(_, i) => (
                     <div key={i}>
                         Players {i+1} :
                         <p>
@@ -98,7 +119,7 @@ handleChangeIntelligence(event, index){
                 }
             </div>
           <NavLink className="nav-link" to="/simulation">
-              <input type="submit" value="Lancer Simulation" />
+              <input type="submit" value="Lancer Simulation" onClick={this.handleSubmit}/>
           </NavLink>   
     </div>
     );

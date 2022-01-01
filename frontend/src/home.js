@@ -23,7 +23,7 @@ class Home extends React.Component {
       console.log('Client : WebSocket Client Connected');
     };
     client.onmessage = (message) => {
-      console.log(message);
+      //console.log(message);
     };
   }
   
@@ -33,8 +33,9 @@ class Home extends React.Component {
   handleClick(event) {
     console.log("redirect to players")
     client.send(JSON.stringify({
-      nbPlayers: this.state.nbPlayers,
-      nbTurns: this.state.nbTurns
+      fromPage:"home",
+      nbPlayers: ""+this.state.nbPlayers,
+      nbTurns: ""+this.state.nbTurns
     }));
   }
 
