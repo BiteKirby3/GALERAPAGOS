@@ -93,12 +93,12 @@ func MakePrefs(j Joueur, autres []Joueur) (prefs []Joueur) {
 }
 
 //Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur
-//l'action ayant le meilleure score (celui le plus proche de 1) est celle qui est effectuée par le joueur
-func Joue(j Joueur, plateau Jeu) Jeu {
+//l'action ayant le meilleure score est celle qui est effectuée par le joueur
+func Joue(j Joueur, plateau Jeu, nbjoueurs int, joueurs Joueur) Jeu {
 	//TODO en fonction des caractéristiques du joueur et du plateau, calculer les score du joueur
-	scorepeche := GetScorePeche(j, plateau)
-	scoreeau := GetScoreEau(j, plateau)
-	scorebois := GetScoreBois(j, plateau)
+	scorepeche := GetScorePeche(j, plateau, nbjoueurs)
+	scoreeau := GetScoreEau(j, plateau, nbjoueurs)
+	scorebois := GetScoreBois(j, plateau, nbjoueurs)
 	scoremax := math.Max(math.Max(scorebois, scorepeche), scoreeau)
 	switch scoremax {
 	case scorebois:

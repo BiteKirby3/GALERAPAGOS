@@ -51,7 +51,7 @@ func main() {
 				fmt.Println("Un ouragan ravage l'île, c'est votre dernière chance...")
 				for i := 1; i <= nbjoueursvivants; i++ {
 					fmt.Println(joueurjouant.Nom, ", c'est à toi !")
-					plateau = Agents.Joue(plateau, joueurjouant)
+					plateau = Agents.Joue(plateau, joueurjouant, nbjoueursvivants)
 					joueurjouant = Agents.AuTourDe(joueurs, joueurjouant)
 				}
 			} else {
