@@ -21,7 +21,7 @@ func ConstructionRadeau(j Joueur) int {
 	return rand.Intn(3) + 1
 }
 
-func GetScorePeche(j Joueur, plateau Jeu, nbjoueurs int) float64 {
+func GetScorePeche(j Joueur, plateau Jeu, nbjoueurs int) int {
 	if nbjoueurs > plateau.StockNourriture {
 		if j.Pecheur && !j.Bricoleur {
 			return 1
@@ -125,7 +125,7 @@ func GetScoreEau(j Joueur, plateau Jeu, nbjoueurs int) int {
 	*/
 	return 0
 }
-func GetScoreBois(j Joueur, plateau Jeu, nbjoueurs int) float64 {
+func GetScoreBois(j Joueur, plateau Jeu, nbjoueurs int) int {
 
 	/*
 			score bois dépend :
