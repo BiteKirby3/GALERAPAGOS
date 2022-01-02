@@ -91,6 +91,7 @@ handleChangeIntelligence(event, index){
         <div className="scrollmenu">
         {this.state.gotNbPlayers ? (
                 Array.from({length: this.state.nbPlayers},(_, i) => (
+                  <div className="canvas">
                     <div key={i}>
                         <b>Joueur {i+1} : </b>
                         <p>
@@ -117,7 +118,7 @@ handleChangeIntelligence(event, index){
                                 Intelligence : <input type="number" value={this.state.players[i].intelligence}  min={0} max={10} step={1} onChange={event => this.handleChangeIntelligence(event, i)}/>   
                             </label>
                         </p>
-                </div>
+                </div></div>
                 ))   ):(<div></div>)
                 }
             </div>

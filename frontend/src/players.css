@@ -59,3 +59,12 @@ select{
   border-radius: 10%;
   border-color: #a17b61;
 }
+
+.canvas{
+  background-color:#f7ebe0;
+  height: 350px;
+  width: 410px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 20px;
+}

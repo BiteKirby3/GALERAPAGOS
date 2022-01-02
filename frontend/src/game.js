@@ -87,22 +87,46 @@ updatePlayer(index, attributes){
   render() {
     return (
       <div className="home">
+        <div className="scrollmenu">
         <div className="players">
           <label>Joueurs restants :</label>
-          <table>
-            <tr>
-              <th>Joueur 1</th>
-              <th>Joueur 2</th>
-              <th>Joueur 3</th>
-            </tr>
-            <tr>
-              <td><img src={process.env.PUBLIC_URL + "fishman.png"} width={"200px"} height={"300px"} alt="pêcheur"></img></td>
-              <td><img src={process.env.PUBLIC_URL + "normal_person.png"} width={"200px"} height={"300px"} alt="Météo"></img></td>
-              <td><img src={process.env.PUBLIC_URL + "woodmaker.png"} width={"150px"} height={"210px"} alt="Météo"></img></td>
-            </tr>
-            </table> 
+          <ul className="no-bullets">
+            <div className="flex-container">
+                <li>
+                  <p>Joueur 1</p>
+                  <img src={process.env.PUBLIC_URL + "fishman.png"} width={"120px"} height={"200px"} alt="pêcheur"></img>
+                  <p>Egoïsme :</p>
+                  <p>Intelligence :</p>
+                </li> 
+            </div>
+                <div className="flex-container">
+                  <li>
+                    <p>Joueur 2</p>
+                    <img src={process.env.PUBLIC_URL + "normal_person.png"} width={"130px"} height={"200px"} alt="Météo"></img>
+                    <p>Egoïsme :</p>
+                    <p>Intelligence :</p>
+                  </li>
+                </div> 
+                <div className="flex-container">
+                  <li>
+                    <p>Joueur 3</p>
+                    <img src={process.env.PUBLIC_URL + "woodmaker.png"} width={"130px"} height={"200px"} alt="Météo"></img>
+                    <p>Egoïsme :</p>
+                    <p>Intelligence :</p>
+                  </li>
+                </div> 
+                <div className="flex-container">
+                <li><p>Joueur 1</p><img src={process.env.PUBLIC_URL + "fishman.png"} width={"120px"} height={"200px"} alt="pêcheur"></img></li> 
+                <p>Egoïsme :</p>
+                    <p>Intelligence :</p>
+                </div>
+                <div className="flex-container"><li><p>Joueur 2</p><img src={process.env.PUBLIC_URL + "normal_person.png"} width={"130px"} height={"200px"} alt="Météo"></img><p>Egoïsme :</p>
+                    <p>Intelligence :</p></li></div> 
+                <div className="flex-container"><li><p>Joueur 3</p><img src={process.env.PUBLIC_URL + "woodmaker.png"} width={"130px"} height={"200px"} alt="Météo"></img><p>Egoïsme :</p>
+                    <p>Intelligence :</p></li></div> 
+          </ul>
         </div>
-
+        </div>
 
         <div className="gameInfo">
           <div className="log">
@@ -141,7 +165,6 @@ updatePlayer(index, attributes){
             </table> 
           </div>
         </div>
-
     </div>
     );
   }
