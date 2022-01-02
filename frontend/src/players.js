@@ -92,7 +92,7 @@ handleChangeIntelligence(event, index){
         {this.state.gotNbPlayers ? (
                 Array.from({length: this.state.nbPlayers},(_, i) => (
                     <div key={i}>
-                        Joueur {i+1} :
+                        <b>Joueur {i+1} : </b>
                         <p>
                         <label>
                             Nom : <input type="text" value={this.state.players[i].name} onChange={event => this.handleChangeName(event, i)} />     
@@ -118,7 +118,7 @@ handleChangeIntelligence(event, index){
                             </label>
                         </p>
                 </div>
-                ))     ):(<div></div>)
+                ))   ):(<div></div>)
                 }
             </div>
           <NavLink className="nav-link" to="/simulation">

@@ -42,3 +42,20 @@
     padding: 0 25px;
   }
 }
+
+
+label {
+  color: #B4886B;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+input{
+  border-radius: 10%;
+  border-color: #a17b61;
+}
+
+select{
+  border-radius: 10%;
+  border-color: #a17b61;
+}

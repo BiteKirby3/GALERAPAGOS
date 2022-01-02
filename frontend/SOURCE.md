@@ -12,3 +12,9 @@ https://github.com/Shariful-Islam-Sourav/landers-react-app?ref=reactjsexample.co
 
 
 https://www.philibertnet.com/fr/gigamic/52009-galerapagos-3421271815211.html 
+
+
+
+
+https://www.w3schools.com/howto/howto_css_chat.asp #chatbox
+https://www.w3schools.com/css/css_form.asp #textarea
