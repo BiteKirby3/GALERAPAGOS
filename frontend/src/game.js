@@ -32,7 +32,7 @@ class Game extends React.Component {
 }
 
 //websocket
-componentWillMount() {
+componentDidMount() {
     client.onopen = () => {
       console.log('Client : WebSocket Client Connected');
     };
@@ -57,6 +57,9 @@ componentWillMount() {
       } else if (obj.messageType == "gameEnd"){
         this.setState({ gameEnd : true})
       }
+      client.send(JSON.stringify({
+            fromPage : "simulation_connexion",
+      }));
       /*
       this.setState({nbPlayers : obj.nbPlayers});
       for (var i = 0; i < this.state.nbPlayers; i++) {
@@ -69,19 +72,6 @@ componentWillMount() {
         });
     }*/
     };
-  }
-  componentDidMount() {
-    client.onopen = () => {
-      console.log('Client : WebSocket Client Connected');
-    };
-    client.onmessage = (message) => {
-      console.log(message);
-      const data = JSON.parse(message.data)
-      console.log(data);
-    };
-    client.send(JSON.stringify({
-      fromPage : "simulation_connexion",
-    }));
   }
 
 handleSubmit(event) {
