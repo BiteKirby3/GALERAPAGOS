@@ -203,7 +203,7 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 	nbJoueurVivants := nbJoueurs
 
 	for _, val := range joueurs {
-		val.Prefs = Agents.MakePrefs(val, joueurs)
+		Agents.MakePrefs(val, &joueurs)
 	}
 	InitCompteur(plateau, joueurs, "Le jeu commence")
 	/*

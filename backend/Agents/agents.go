@@ -83,30 +83,29 @@ func AuTourDe(joueurs []Joueur, premier Joueur) (j Joueur) {
 	return j
 }
 
-func MakePrefs(j Joueur, autres []Joueur) (prefs []int) {
+func MakePrefs(j Joueur, autres *[]Joueur) {
 	var joueurIndice int
-	for i, val := range autres {
+	for i, val := range *autres {
 		if j.ID == val.ID {
 			joueurIndice = i
 		}
 	}
 	precedentIndice := joueurIndice - 1
 	if precedentIndice == -1 {
-		precedentIndice = len(autres) - 1
+		precedentIndice = len(*autres) - 1
 	}
 	suivantIndice := joueurIndice + 1
-	if suivantIndice == len(autres) {
+	if suivantIndice == len(*autres) {
 		suivantIndice = 0
 	}
-	j.Prefs = append(j.Prefs, autres[precedentIndice].ID)
-	j.Prefs = append(j.Prefs, autres[suivantIndice].ID)
-	for i, val := range autres {
+	j.Prefs = append(j.Prefs, (*autres)[precedentIndice].ID)
+	j.Prefs = append(j.Prefs, (*autres)[suivantIndice].ID)
+	for i, val := range *autres {
 		if (i != suivantIndice) && (i != joueurIndice) && (i != precedentIndice) {
 			j.Prefs = append(j.Prefs, val.ID)
 		}
 	}
-	return j.Prefs
-	return j.Prefs
+	(*autres)[joueurIndice].Prefs = j.Prefs
 }
 
 //Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur
