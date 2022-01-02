@@ -7,3 +7,47 @@
 .unload h1{
     margin-bottom: 3%;
 }
+
+.gameLog{
+    height: 270px;
+    width: 350px;
+    background-color:blanchedalmond;
+    border-radius: 10px;
+    border-color: blanchedalmond;
+}
+
+.players{
+    float:left;
+}
+
+.gameInfo{
+    float:right;
+}
+
+.players{
+    float:left;
+}
+
+.playerCards{
+    height: 400px;
+    width: 600px;
+    background-color:blanchedalmond;
+    border-radius: 10px;
+    border-color: blanchedalmond;
+}
+
+.counter table, th, td {
+    border:2px solid coral;
+    color: darkgoldenrod;
+    margin-left: 80px;
+}
+
+div label{
+    font-size: 25px;
+    margin-left: 4px;
+    vertical-align: top;
+}
+
+#roundCount {
+    color: coral;
+}

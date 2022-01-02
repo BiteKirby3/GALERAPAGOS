@@ -6,7 +6,7 @@ const ROLE_FISHERMAN = "fisherman"
 const ROLE_HANDYMAN = "handyman"
 const ROLE_NONE = "none"
 
-const client = new W3CWebSocket('ws://127.0.0.1:5000');
+//const client = new W3CWebSocket('ws://127.0.0.1:5000');
 
 class Game extends React.Component {
   constructor(props) {
@@ -16,23 +16,23 @@ class Game extends React.Component {
         players : [],
         messages : [],
         currentPlayerID : null,
+        currentMeteoImageUrl : "question_mark.gif",
         nbPlayersRest : 0,
+        currentRound: 0,
         gotPlayersInfo : false,
         gameEnd : false,
     };
 
-    this.handleChangeName = this.handleChangeName.bind(this);
-    this.handleChangeSelfishness = this.handleChangeSelfishness.bind(this);
-    this.handleChangeIntelligence = this.handleChangeIntelligence.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
+/*
     client.send(JSON.stringify({
         fromPage : "simulation_connexion",
       }));
+      */
 }
 
 //websocket
 componentDidMount() {
+  /*
     client.onopen = () => {
       console.log('Client : WebSocket Client Connected');
     };
@@ -58,10 +58,7 @@ componentDidMount() {
       } else if (obj.messageType == "gameEnd"){
         this.setState({ gameEnd : true})
       }
-      client.send(JSON.stringify({
-            fromPage : "simulation_connexion",
-      }));
-      /*
+      
       this.setState({nbPlayers : obj.nbPlayers});
       for (var i = 0; i < this.state.nbPlayers; i++) {
         this.state.players.push({
@@ -71,17 +68,10 @@ componentDidMount() {
             selfishness : 0,
             intelligence : 0,
         });
-    }*/
-    };
+    }
+    };*/
   }
 
-handleSubmit(event) {
-    console.log("redirect to simulation")
-    client.send(JSON.stringify({
-      fromPage : "players",
-      players : this.state.players
-    }));
-  }
 
 updatePlayer(index, attributes){
     let players = [...this.state.players];
@@ -93,72 +83,64 @@ updatePlayer(index, attributes){
     this.setState({players : players});
 }
 
-handleChangeName(event, index){
-    this.updatePlayer(index,{name: event.target.value})
-}
-handleChangeRole(event, index){
-    this.updatePlayer(index,{role: event.target.value})
-}
-handleChangeSelfishness(event, index){
-    this.updatePlayer(index,{selfishness: Number(event.target.value)})
-}
-handleChangeIntelligence(event, index){
-    this.updatePlayer(index,{intelligence:  Number(event.target.value)})
-}
 
   render() {
     return (
-      <div className="game">
-        {this.state.gotPlayersInfo ?
-        (
-        <div className="gameLog">
-        <textarea>
-        </textarea>
+      <div className="home">
+        <div className="players">
+          <label>Joueurs restants :</label>
+          <table>
+            <tr>
+              <th>Joueur 1</th>
+              <th>Joueur 2</th>
+              <th>Joueur 3</th>
+            </tr>
+            <tr>
+              <td><img src={process.env.PUBLIC_URL + "fishman.png"} width={"200px"} height={"300px"} alt="pêcheur"></img></td>
+              <td><img src={process.env.PUBLIC_URL + "normal_person.png"} width={"200px"} height={"300px"} alt="Météo"></img></td>
+              <td><img src={process.env.PUBLIC_URL + "woodmaker.png"} width={"150px"} height={"210px"} alt="Météo"></img></td>
+            </tr>
+            </table> 
         </div>
-        ):
-        (
-        <div className="unload">
-          <h1>Veuillez attendre ... </h1>
-          <img
-                    className="page_image"
-                    src="../public/loading.gif"
-                    alt=""
-                />
-        </div>)
-        }
-        <div className="playerCard">
-        {this.state.gotPlayersInfo ? (
-                Array.from({length: this.state.nbPlayersRest},(_, i) => (
-                    <div key={i}>
-                        Joueur {i+1} :
-                        <p>
-                        <label>
-                            Nom : <input type="text" value={this.state.players[i].name} onChange={event => this.handleChangeName(event, i)} />
-                        </label>
-                        </p>
-                        <p>
-                        <label>
-                            Rôle : <select value={this.state.players[i].role} onChange={event => this.handleChangeRole(event, i)}>
-                                <option defaultValue={ROLE_NONE}>Rien</option>
-                                <option value={ROLE_FISHERMAN}>Pêcheur</option>
-                                <option value={ROLE_HANDYMAN}>Bucheron</option>
-                            </select>
-                        </label>
-                        </p>
-                        <p>
-                            <label>
-                                Egoïsme : <input type="number" value={this.state.players[i].selfishness}  min={0} max={10} step={1} onChange={event => this.handleChangeSelfishness(event, i)}/>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                Intelligence : <input type="number" value={this.state.players[i].intelligence}  min={0} max={10} step={1} onChange={event => this.handleChangeIntelligence(event, i)}/>
-                            </label>
-                        </p>
-                </div>
-                ))     ):(<div></div>)
-                }
-            </div>
+
+
+        <div className="gameInfo">
+          <div className="log">
+            <label>Log : </label>
+            <textarea className="gameLog">
+            </textarea>
+          </div>
+
+          <div className="currentRound">
+            <p>
+              <label>Tour : </label>
+              <label id="roundCount">{this.state.currentRound}</label>
+            </p>
+          </div>
+
+          <div className="meteo">
+            <label>Météo : </label>
+            <img src={process.env.PUBLIC_URL + this.state.currentMeteoImageUrl} width={"100px"} height={"100px"} alt="Météo"></img>
+          </div>
+
+          <div className="counter">
+            <label>Compteur : </label>
+            <table>
+            <tr>
+              <th>Radeau</th>
+              <th>Bois</th>
+              <th>Eau</th>
+              <th>Poisson</th>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            </table> 
+          </div>
+        </div>
 
     </div>
     );
