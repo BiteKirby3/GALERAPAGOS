@@ -14,6 +14,8 @@ import (
 	"golang.org/x/net/websocket"
 )
 
+var durationSleep = 400 * time.Millisecond
+
 type Player struct {
 	Id           int
 	Name         string
@@ -97,77 +99,6 @@ func (s *Serveur) React(ws *websocket.Conn) {
 						countMessageSend++
 					}
 				}
-				/*
-					The message should be in json format with at least two fields message(that we will show directly in the log) and messageType.
-					PS : don't forget to add a time.Sleep(2 * time.Second) between each sending of messages (and in tour simulation), otherwise it will end quickly
-					The simulation of the game should contain :
-					Ex 1 :
-					{
-						"message" : ".........",
-						"messageType" : "gameStart",
-						"players": [
-							{id: "0",name: "...",....},
-							{id: "1",name: "...",....},
-							.....
-							]
-					}
-
-					Ex 2 :
-					{
-						"message" : ".........",
-						"messageType" : "roundStart",
-						"currentRound" : 1
-					}
-
-					Ex 3 :
-					{
-						"message" : ".........",
-						"messageType" : "meteo",
-						"meteo" : "soleil"
-					}
-
-					Ex 4 :
-					{
-						"message" : ".........",
-						"messageType" : "action",
-						"action" : "fishing"
-						"amountObtained" : 1
-					}
-
-					Ex 5 :
-					{
-						"message" : ".........",
-						"messageType" : "death",
-						"idPlayer" : "1"
-					}
-
-					Ex 6 :
-					{
-						"message" : ".........",
-						"messageType" : "roundEnd",
-					}
-
-					Ex 6 :
-					{
-						"message" : ".........",
-						"messageType" : "constructRaft",
-						"done" : true
-					}
-
-					Ex 7 :
-					{
-						"message" : ".........",
-						"messageType" : "gameEnd",
-						"result" : ".........."
-					}
-
-					Ex 7 :
-					for all the additional message that we want to display
-					{
-						"message" : ".........",
-						"messageType" : "info",
-					}
-				*/
 			}
 		}
 	}
@@ -193,11 +124,13 @@ func sendMessage(m Agents.Message, ws *websocket.Conn, err error) {
 func InitCompteur(plateauInitial Agents.Jeu, joueurs []Agents.Joueur) {
 	message := Agents.Message{joueurs, plateauInitial, "Le jeu commence", "gameStart"}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func FirstPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
 	message := Agents.Message{joueurs, plateauInitial, joueurs[i].Nom + " commence la partie", "firstPlayer"}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func InitMeteo(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
@@ -214,6 +147,7 @@ func InitMeteo(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
 		message = Agents.Message{joueurs, plateauInitial, "Météo : Sécheresse (eau : 0)", "meteo"}
 	}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func ActionPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, id int, typeAction int, nb int) {
@@ -228,21 +162,25 @@ func ActionPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, id int, ty
 		message = Agents.Message{joueurs, plateauInitial, s + " planches de bois.", "action"}
 	}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func NextPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
 	message := Agents.Message{joueurs, plateauInitial, "c'est à " + joueurs[i].Nom + " de jouer", "nextPlayer"}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func DeathPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
 	message := Agents.Message{joueurs, plateauInitial, joueurs[i].Nom + " est mort", "death"}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func SurvivePlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
 	message := Agents.Message{joueurs, plateauInitial, joueurs[i].Nom + " a survécu", "alive"}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func GameEnd(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, win bool) {
@@ -253,11 +191,13 @@ func GameEnd(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, win bool) {
 		message = Agents.Message{joueurs, plateauInitial, "C'est la fin du jeu! ", "gameEnd"}
 	}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func RoundEnd(plateauInitial Agents.Jeu, joueurs []Agents.Joueur) {
 	message := Agents.Message{joueurs, plateauInitial, "C'est la fin du tour. ", "roundEnd"}
 	addMessage(message)
+	time.Sleep(durationSleep)
 }
 
 func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
