@@ -57,6 +57,77 @@ func (s *Serveur) React(ws *websocket.Conn) {
 					fmt.Println("Can't send" + reply)
 					break
 				*/
+				/*
+					The message should be in json format with at least two fields message(that we will show directly in the log) and messageType.
+					PS : don't forget to add a time.Sleep(2 * time.Second) between each sending of messages (and in tour simulation), otherwise it will end quickly
+					The simulation of the game should contain :
+					Ex 1 :
+					{
+						"message" : ".........",
+						"messageType" : "gameStart",
+						"players": [
+							{id: "0",name: "...",....},
+							{id: "1",name: "...",....},
+							.....
+							]
+					}
+
+					Ex 2 :
+					{
+						"message" : ".........",
+						"messageType" : "roundStart",
+						"currentRound" : 1
+					}
+
+					Ex 3 :
+					{
+						"message" : ".........",
+						"messageType" : "meteo",
+						"meteo" : "soleil"
+					}
+
+					Ex 4 :
+					{
+						"message" : ".........",
+						"messageType" : "action",
+						"action" : "fishing"
+						"amountObtained" : 1
+					}
+
+					Ex 5 :
+					{
+						"message" : ".........",
+						"messageType" : "death",
+						"idPlayer" : "1"
+					}
+
+					Ex 6 :
+					{
+						"message" : ".........",
+						"messageType" : "roundEnd",
+					}
+
+					Ex 6 :
+					{
+						"message" : ".........",
+						"messageType" : "constructRaft",
+						"done" : true
+					}
+
+					Ex 7 :
+					{
+						"message" : ".........",
+						"messageType" : "gameEnd",
+						"result" : ".........."
+					}
+
+					Ex 7 :
+					for all the additional message that we want to display
+					{
+						"message" : ".........",
+						"messageType" : "info",
+					}
+				*/
 			}
 		}
 	}

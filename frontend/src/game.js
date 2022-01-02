@@ -11,10 +11,10 @@ const client = new W3CWebSocket('ws://127.0.0.1:5000');
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    const players = []
 
     this.state = {
-        players : players,
+        players : [],
+        messages : [],
         currentPlayerID : null,
         nbPlayersRest : 0,
         gotPlayersInfo : false,
@@ -38,9 +38,9 @@ componentWillMount() {
     };
     client.onmessage = (message) => {
       var obj = JSON.parse(message.data)
-      if (obj.messageType == "start"){
+      if (obj.messageType == "gameStart"){
         this.setState({gotPlayersInfo : true})
-      } else if (obj.messageType == "firstPlayer"){
+      } else if (obj.messageType == "roundStart"){
 
       } else if (obj.messageType == "info"){
 
@@ -50,7 +50,11 @@ componentWillMount() {
 
       } else if (obj.messageType == "death"){
 
-      } else if (obj.messageType == "end"){
+      } else if (obj.messageType == "roundEnd"){
+
+      } else if (obj.messageType == "constructRaft"){
+
+      } else if (obj.messageType == "gameEnd"){
         this.setState({ gameEnd : true})
       }
       /*
