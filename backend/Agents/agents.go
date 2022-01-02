@@ -58,7 +58,7 @@ func Meurt(j Joueur) Joueur {
 	return j
 }
 
-func AuTourDe(joueurs []Joueur, premier Joueur) (j Joueur) {
+func AuTourDe(joueurs []Joueur, premier Joueur) (j Joueur, pos int) {
 	index := 0
 	for i, j := range joueurs {
 		if premier.ID == j.ID {
@@ -69,6 +69,7 @@ func AuTourDe(joueurs []Joueur, premier Joueur) (j Joueur) {
 	for i := index + 1; i < len(joueurs); i++ {
 		if !joueurs[i].EstMort && !trouve {
 			j = joueurs[i]
+			pos = i
 			trouve = true
 		}
 	}
@@ -76,11 +77,12 @@ func AuTourDe(joueurs []Joueur, premier Joueur) (j Joueur) {
 		for i := 0; i < index; i++ {
 			if !joueurs[i].EstMort && !trouve {
 				j = joueurs[i]
+				pos = i
 				trouve = true
 			}
 		}
 	}
-	return j
+	return j, pos
 }
 
 func MakePrefs(j Joueur, autres *[]Joueur) {
@@ -110,24 +112,32 @@ func MakePrefs(j Joueur, autres *[]Joueur) {
 
 //Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur
 //l'action ayant le meilleure score est celle qui est effectuée par le joueur
-func Joue(plateau Jeu, j Joueur, nbjoueurs int) Jeu {
+func Joue(plateau Jeu, j Joueur, nbjoueurs int) (Jeu, int, int) {
 	//TODO en fonction des caractéristiques du joueur et du plateau, calculer les score du joueur
+	typeAction := 0
+	nb := 0
 	scorepeche := float64(GetScorePeche(j, plateau, nbjoueurs))
 	scoreeau := float64(GetScoreEau(j, plateau, nbjoueurs))
 	scorebois := float64(GetScoreBois(j, plateau, nbjoueurs))
 	scoremax := math.Max(math.Max(scorebois, scorepeche), scoreeau)
 	switch scoremax {
 	case scorebois:
-		plateau.StockBois += ConstructionRadeau(j)
+		typeAction = 2
+		nb = ConstructionRadeau(j)
+		plateau.StockBois += nb
 		if plateau.StockBois >= 6 {
 			nbPlaces := plateau.StockBois / 6
 			plateau.PlaceRadeau += nbPlaces
 			plateau.StockBois = plateau.StockBois - (nbPlaces * 6)
 		}
 	case scoreeau:
-		plateau.StockEau += ChercherEau(plateau.Meteo)
+		typeAction = 0
+		nb = ChercherEau(plateau.Meteo)
+		plateau.StockEau += nb
 	case scorepeche:
-		plateau.StockNourriture += Pecher(j)
+		typeAction = 1
+		nb = Pecher(j)
+		plateau.StockNourriture += nb
 	}
-	return plateau
+	return plateau, typeAction, nb
 }

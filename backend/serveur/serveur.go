@@ -190,8 +190,73 @@ func sendMessage(m Agents.Message, ws *websocket.Conn, err error) {
 	}
 }
 
-func InitCompteur(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, log string) {
-	message := Agents.Message{joueurs, plateauInitial, log, "INIT"}
+func InitCompteur(plateauInitial Agents.Jeu, joueurs []Agents.Joueur) {
+	message := Agents.Message{joueurs, plateauInitial, "Le jeu commence", "gameStart"}
+	addMessage(message)
+}
+
+func FirstPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
+	message := Agents.Message{joueurs, plateauInitial, joueurs[i].Nom + " commence la partie", "firstPlayer"}
+	addMessage(message)
+}
+
+func InitMeteo(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
+	var message Agents.Message
+	if i == 4 {
+		message = Agents.Message{joueurs, plateauInitial, "Météo : Ouragan (eau : 4)", "meteo"}
+	} else if i == 3 {
+		message = Agents.Message{joueurs, plateauInitial, "Météo : Averse (eau : 3)", "meteo"}
+	} else if i == 2 {
+		message = Agents.Message{joueurs, plateauInitial, "Météo : Pluvieux (eau : 2)", "meteo"}
+	} else if i == 1 {
+		message = Agents.Message{joueurs, plateauInitial, "Météo : Nuageux (eau : 1)", "meteo"}
+	} else {
+		message = Agents.Message{joueurs, plateauInitial, "Météo : Sécheresse (eau : 0)", "meteo"}
+	}
+	addMessage(message)
+}
+
+func ActionPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, id int, typeAction int, nb int) {
+	nbString := strconv.Itoa(nb)
+	s := joueurs[id].Nom + " a récupéré " + nbString
+	var message Agents.Message
+	if typeAction == 0 {
+		message = Agents.Message{joueurs, plateauInitial, s + " gourdes d'eau.", "action"}
+	} else if typeAction == 1 {
+		message = Agents.Message{joueurs, plateauInitial, s + " poissons.", "action"}
+	} else {
+		message = Agents.Message{joueurs, plateauInitial, s + " planches de bois.", "action"}
+	}
+	addMessage(message)
+}
+
+func NextPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
+	message := Agents.Message{joueurs, plateauInitial, "c'est à " + joueurs[i].Nom + " de jouer", "nextPlayer"}
+	addMessage(message)
+}
+
+func DeathPlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
+	message := Agents.Message{joueurs, plateauInitial, joueurs[i].Nom + " est mort", "death"}
+	addMessage(message)
+}
+
+func SurvivePlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
+	message := Agents.Message{joueurs, plateauInitial, joueurs[i].Nom + " a survécu", "alive"}
+	addMessage(message)
+}
+
+func GameEnd(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, win bool) {
+	var message Agents.Message
+	if !win {
+		message = Agents.Message{joueurs, plateauInitial, "C'est la fin du jeu! Les joueurs restants sont mort de faim et/ou de soif", "gameEnd"}
+	} else {
+		message = Agents.Message{joueurs, plateauInitial, "C'est la fin du jeu! ", "gameEnd"}
+	}
+	addMessage(message)
+}
+
+func RoundEnd(plateauInitial Agents.Jeu, joueurs []Agents.Joueur) {
+	message := Agents.Message{joueurs, plateauInitial, "C'est la fin du tour. ", "roundEnd"}
 	addMessage(message)
 }
 
@@ -205,11 +270,13 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 	for _, val := range joueurs {
 		Agents.MakePrefs(val, &joueurs)
 	}
-	InitCompteur(plateau, joueurs, "Le jeu commence")
+	InitCompteur(plateau, joueurs)
 	/*
 		DEROULEMENT DE LA PARTIE
 	*/
+	indicePremier := 0
 	premierjoueur := joueurs[0] //on détermine le premier joueur
+	FirstPlayer(plateau, joueurs, indicePremier)
 	// Le jeu continue tant que pas d'ouragan et au moins 1 joueurs sont en vie
 	for plateau.TourActuel != plateau.NbTour && nbJoueurVivants >= 1 {
 		var profile [][]int
@@ -217,33 +284,42 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 		plateau = Agents.NewDay(plateau)
 		fmt.Println("_______Tour : ", plateau.TourActuel)
 		fmt.Println("Météo : ", plateau.Meteo)
+		InitMeteo(plateau, joueurs, plateau.Meteo)
 		//Changement du premier joueur
 		if plateau.TourActuel == 1 {
 			premierjoueur = joueurs[0]
+			indicePremier = 0
+			FirstPlayer(plateau, joueurs, indicePremier)
 		} else {
-			premierjoueur = Agents.AuTourDe(joueurs, premierjoueur)
+			premierjoueur, indicePremier = Agents.AuTourDe(joueurs, premierjoueur)
+			FirstPlayer(plateau, joueurs, indicePremier)
 		}
 		fmt.Println("Pour ce tour c'est ", premierjoueur.Nom, " qui commence")
 
 		joueurJouant := premierjoueur
+		indiceJoueur := indicePremier
+		typeAction := 0
+		nbRecolte := 0
 		//Action des joueurs
-		for i := 1; i <= nbJoueurVivants; i++ {
+		for i := 0; i < nbJoueurVivants; i++ {
 			fmt.Println(joueurJouant.Nom, ", c'est à toi !")
 			profile = append(profile, joueurJouant.Prefs)
-			plateau = Agents.Joue(plateau, joueurJouant, nbJoueurVivants)
-			joueurJouant = Agents.AuTourDe(joueurs, joueurJouant)
+			plateau, typeAction, nbRecolte = Agents.Joue(plateau, joueurJouant, nbJoueurVivants)
+			ActionPlayer(plateau, joueurs, indiceJoueur, typeAction, nbRecolte)
+			joueurJouant, indiceJoueur = Agents.AuTourDe(joueurs, joueurJouant)
+			NextPlayer(plateau, joueurs, indiceJoueur)
 		}
-
 		//Vote
 		if (plateau.StockEau > 0) && (plateau.StockNourriture > 0) {
 			if plateau.StockEau < nbJoueurVivants {
 				nbDePersonneATue := nbJoueurVivants - plateau.StockEau
 				IDMort := Agents.Vote(profile, nbDePersonneATue)
-				for i := 1; i <= nbJoueurVivants; i++ {
+				for i := 0; i < nbJoueurVivants; i++ {
 					for _, val := range IDMort {
 						if joueurs[i].ID == val {
 							joueurs[i].EstMort = true
 							fmt.Println(joueurs[i].Nom + " a été tué")
+							DeathPlayer(plateau, joueurs, i)
 							nbJoueurVivants--
 						}
 					}
@@ -254,11 +330,12 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 			if plateau.StockNourriture < nbJoueurVivants {
 				nbDePersonnesATue := nbJoueurVivants - plateau.StockNourriture
 				IDMort := Agents.Vote(profile, nbDePersonnesATue)
-				for i := 1; i <= nbJoueurVivants; i++ {
+				for i := 0; i < nbJoueurVivants; i++ {
 					for _, val := range IDMort {
 						if joueurs[i].ID == val {
 							joueurs[i].EstMort = true
 							fmt.Println(joueurs[i].Nom + " a été tué")
+							DeathPlayer(plateau, joueurs, i)
 							nbJoueurVivants--
 						}
 					}
@@ -270,30 +347,35 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 			if (plateau.PlaceRadeau < nbJoueurVivants) && (plateau.Meteo == 4) {
 				nbDePersonneATue := nbJoueurVivants - plateau.PlaceRadeau
 				IDMort := Agents.Vote(profile, nbDePersonneATue)
-				for i := 1; i <= nbJoueurVivants; i++ {
+				for i := 0; i < nbJoueurVivants; i++ {
 					for _, val := range IDMort {
 						if joueurs[i].ID == val {
 							joueurs[i].EstMort = true
 							fmt.Println(joueurs[i].Nom + " a été tué")
+							DeathPlayer(plateau, joueurs, i)
 							nbJoueurVivants--
 						}
 					}
 				}
 			}
 
+			RoundEnd(plateau, joueurs)
+
 			//Survie des naufragés
 			if plateau.Meteo == 4 {
 				fmt.Println("Un ouragan a ravagé l'île...")
-				for _, val := range joueurs {
+				for id, val := range joueurs {
 					if !val.EstMort {
 						fmt.Println(val.Nom + " a survécu")
+						SurvivePlayer(plateau, joueurs, id)
+						GameEnd(plateau, joueurs, true)
 					}
 				}
 			}
 		} else {
 			fmt.Println("Les joueurs restants sont mort de faim et/ou de soif")
+			GameEnd(plateau, joueurs, false)
 		}
-
 	}
 }
 

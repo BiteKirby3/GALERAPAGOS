@@ -38,6 +38,7 @@ componentDidMount() {
     };
     client.onmessage = (message) => {
       var obj = JSON.parse(message.data)
+      console.log(obj)
       if (obj.messageType == "gameStart"){
         this.setState({gotPlayersInfo : true})
       } else if (obj.messageType == "roundStart"){
