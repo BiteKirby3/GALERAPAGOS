@@ -16,6 +16,13 @@ type Jeu struct {
 	TourActuel      int
 }
 
+type Message struct {
+	ListJoueurs []Joueur
+	Plateau     Jeu
+	Description string
+	TypeEvent   string
+}
+
 func InitJeu(nbJ int, nbTour int) Jeu {
 	nourriture := 0
 	eau := 0

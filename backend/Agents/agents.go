@@ -18,9 +18,9 @@ type Joueur struct {
 }
 
 //Constructeurs
-func NewJoueur(id int, intelligence int, nom string) Joueur {
+func NewJoueur(id int, intelligence int, egoisme int, p bool, b bool, nom string) Joueur {
 	var prefs []int
-	return Joueur{id, nom, 10, intelligence, false, false, false, prefs}
+	return Joueur{id, nom, egoisme, intelligence, p, b, false, prefs}
 }
 
 //Vérification des attributs

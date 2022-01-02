@@ -32,7 +32,7 @@ class Players extends React.Component {
 }
 
 //websocket
-componentWillMount() {
+componentDidMount() {
     client.onopen = () => {
       console.log('Client : WebSocket Client Connected');
     };
@@ -58,6 +58,7 @@ handleSubmit(event) {
       fromPage : "players",
       players : this.state.players
     }));
+    client.close()
   }
 
 updatePlayer(index, attributes){
