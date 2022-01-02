@@ -16,6 +16,14 @@ type Jeu struct {
 	TourActuel      int
 }
 
+func AfficheJeu(plateau Jeu) {
+	fmt.Println("Voici les stocks actuels:")
+	fmt.Println("-eau ", plateau.StockEau)
+	fmt.Println("-nourriture", plateau.StockNourriture)
+	fmt.Println("-bois", plateau.StockBois)
+	fmt.Println("-places radeau", plateau.PlaceRadeau)
+}
+
 func InitJeu(nbJ int, nbTour int) Jeu {
 	nourriture := 0
 	eau := 0

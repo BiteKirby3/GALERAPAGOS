@@ -48,22 +48,40 @@ func main() {
 			joueurjouant := premierjoueur
 			//Action des joueurs
 			if plateau.Meteo == 4 {
-				fmt.Println("Un ouragan ravage l'île, c'est votre dernière chance...")
-				for i := 1; i <= nbjoueursvivants; i++ {
-					fmt.Println(joueurjouant.Nom, ", c'est à toi !")
-					plateau = Agents.Joue(plateau, joueurjouant, nbjoueursvivants)
-					joueurjouant = Agents.AuTourDe(joueurs, joueurjouant)
-				}
-			} else {
 				/*
 					Dernier tour :
 					Les joueurs encore en vie agissent en conséquence
 				*/
+				fmt.Println("Un ouragan ravage l'île, c'est votre dernière chance...")
 				for i := 1; i <= nbjoueursvivants; i++ {
 					fmt.Println(joueurjouant.Nom, ", c'est à toi !")
-					//TODO : SES ACTIONS au dernier tour
+					//action?
 					joueurjouant = Agents.AuTourDe(joueurs, joueurjouant)
 				}
+			} else {
+				/*
+					Tour de jeu classique
+				*/
+				for i := 1; i <= nbjoueursvivants; i++ {
+					fmt.Println(joueurjouant.Nom, ", c'est à toi !")
+					plateau = Agents.Joue(joueurjouant, plateau, nbjoueursvivants)
+					Agents.AfficheJeu(plateau)
+					joueurjouant = Agents.AuTourDe(joueurs, joueurjouant)
+				}
+				//Fin du tour, les joueurs ont tous joués, il faut maintenant retirer les stocks
+				if nbjoueursvivants > plateau.StockEau {
+					fmt.Println("Il n'y a pas assez d'eau, il faut éliminer", nbjoueursvivants-plateau.StockEau, "joueurs.")
+					//vote et éliminiation
+					nbjoueursvivants = nbjoueursvivants - (nbjoueursvivants - plateau.StockEau)
+
+				}
+				plateau.StockEau -= nbjoueursvivants
+				if nbjoueursvivants > plateau.StockNourriture {
+					fmt.Println("Il n'y a pas assez de nourriture, il faut éliminer", nbjoueursvivants-plateau.StockNourriture, "joueurs")
+					//vote et élimination
+					nbjoueursvivants = nbjoueursvivants - (nbjoueursvivants - plateau.StockEau)
+				}
+				plateau.StockNourriture -= nbjoueursvivants
 			}
 
 			//Survie des naufragés

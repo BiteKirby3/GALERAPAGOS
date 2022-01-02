@@ -92,17 +92,27 @@ func MakePrefs(j Joueur, autres []Joueur) (prefs []Joueur) {
 	return autres
 }
 
+func CalculPlaceRadeau(bois int) int {
+	//6 bois pour une place
+	return (bois / 6)
+}
+
 //Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur
 //l'action ayant le meilleure score est celle qui est effectuée par le joueur
-func Joue(j Joueur, plateau Jeu, nbjoueurs int, joueurs Joueur) Jeu {
+func Joue(j Joueur, plateau Jeu, nbjoueurs int) Jeu {
 	//TODO en fonction des caractéristiques du joueur et du plateau, calculer les score du joueur
 	scorepeche := GetScorePeche(j, plateau, nbjoueurs)
+	fmt.Println("pêcher :", scorepeche)
 	scoreeau := GetScoreEau(j, plateau, nbjoueurs)
+	fmt.Println("eau :", scoreeau)
 	scorebois := GetScoreBois(j, plateau, nbjoueurs)
+	fmt.Println("bois:", scorebois)
 	scoremax := math.Max(math.Max(scorebois, scorepeche), scoreeau)
+	fmt.Println("score max", scoremax)
 	switch scoremax {
 	case scorebois:
 		plateau.StockBois += ConstructionRadeau(j)
+		plateau.PlaceRadeau = CalculPlaceRadeau(plateau.StockBois)
 	case scoreeau:
 		plateau.StockEau += ChercherEau(plateau.Meteo)
 	case scorepeche:
