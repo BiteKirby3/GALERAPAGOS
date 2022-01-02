@@ -16,6 +16,10 @@
 
 ## Lancement de l'application
 
+- Installer NodeJS, npm et Go
+- Lancer le serveur avec la commande go run backend/serveur/serveur.go
+- Exécuter l'application avec la commande npm start
+
 ## Agents
 
 ### Plateau de jeu
