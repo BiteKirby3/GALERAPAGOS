@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"gitlab.utc.fr/ia04_group/galerapagos_ia04/backend/Agents"
 	"log"
 	"math/rand"
 	"net/http"
@@ -11,10 +10,12 @@ import (
 	"sync"
 	"time"
 
+	"gitlab.utc.fr/ia04_group/galerapagos_ia04/backend/Agents"
+
 	"golang.org/x/net/websocket"
 )
 
-var durationSleep = 400 * time.Millisecond
+var durationSleep = 8000 * time.Millisecond
 
 type Player struct {
 	Id           int

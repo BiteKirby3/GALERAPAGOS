@@ -10,11 +10,12 @@
 
 
 .gameLog{
-    height: 250px;
+    height: 205px;
     width: 400px;
     background-color:blanchedalmond;
     border-radius: 10px;
     border-color: blanchedalmond;
+    overflow-y:scroll;
 }
 
 .log{
