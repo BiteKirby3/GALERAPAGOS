@@ -14,6 +14,8 @@
 - Front-end en ReactJS
 - Back-end en Golang
 
+## Lancement de l'application
+
 ## Agents
 
 ### Plateau de jeu
