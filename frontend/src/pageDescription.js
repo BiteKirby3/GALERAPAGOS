@@ -22,7 +22,7 @@ class PageDescription extends React.Component {
                 />
                 <div>
                     <h1 className="font-weight-light">{this.state.page_title}</h1>
-                        {this.state.descr_text}
+                        <h5>{this.state.descr_text}</h5>
                 </div>
             </div>
         );
