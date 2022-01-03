@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"math/rand"
 )
 
 type Joueur struct {
@@ -86,28 +87,27 @@ func AuTourDe(joueurs []Joueur, premier Joueur) (j Joueur, pos int) {
 }
 
 func MakePrefs(j Joueur, autres *[]Joueur) {
-	var joueurIndice int
+	mapScore := make(map[int]int)
+	joueurIndice := 0
 	for i, val := range *autres {
-		if j.ID == val.ID {
+		if val.ID != j.ID {
+			mapScore[val.ID] = rand.Intn(3)
+			if val.Pecheur == true {
+				mapScore[val.ID] = mapScore[val.ID] + 1
+			} else if val.Bucheron == true {
+				mapScore[val.ID] = mapScore[val.ID] + 1
+			}
+		} else {
 			joueurIndice = i
 		}
 	}
-	precedentIndice := joueurIndice - 1
-	if precedentIndice == -1 {
-		precedentIndice = len(*autres) - 1
+
+	s := MaxCount(mapScore)
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
 	}
-	suivantIndice := joueurIndice + 1
-	if suivantIndice == len(*autres) {
-		suivantIndice = 0
-	}
-	j.Prefs = append(j.Prefs, (*autres)[precedentIndice].ID)
-	j.Prefs = append(j.Prefs, (*autres)[suivantIndice].ID)
-	for i, val := range *autres {
-		if (i != suivantIndice) && (i != joueurIndice) && (i != precedentIndice) {
-			j.Prefs = append(j.Prefs, val.ID)
-		}
-	}
-	(*autres)[joueurIndice].Prefs = j.Prefs
+
+	(*autres)[joueurIndice].Prefs = s
 }
 
 //Pour chaque action on calcule un score de 0 à 1 de faisabilité prenant en compte le plateau et le caractère du joueur

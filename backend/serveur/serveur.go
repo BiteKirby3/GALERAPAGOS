@@ -15,7 +15,7 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-var durationSleep = 5000 * time.Millisecond
+var durationSleep = 200 * time.Millisecond
 
 type Player struct {
 	Id           int
@@ -80,11 +80,11 @@ func (s *Serveur) React(ws *websocket.Conn) {
 				for _, val := range responsePlayers.Players {
 					var j Agents.Joueur
 					if val.Role == "fisherman" {
-						j = Agents.NewJoueur(val.Id, val.Selfishness, val.Intelligence, true, false, val.Name)
+						j = Agents.NewJoueur(val.Id, val.Intelligence, val.Selfishness, true, false, val.Name)
 					} else if val.Role == "handyman" {
-						j = Agents.NewJoueur(val.Id, val.Selfishness, val.Intelligence, false, true, val.Name)
+						j = Agents.NewJoueur(val.Id, val.Intelligence, val.Selfishness, false, true, val.Name)
 					} else {
-						j = Agents.NewJoueur(val.Id, val.Selfishness, val.Intelligence, false, false, val.Name)
+						j = Agents.NewJoueur(val.Id, val.Intelligence, val.Selfishness, false, false, val.Name)
 					}
 					s.listPlayers = append(s.listPlayers, j)
 				}
@@ -190,13 +190,9 @@ func SurvivePlayer(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, i int) {
 	time.Sleep(durationSleep)
 }
 
-func GameEnd(plateauInitial Agents.Jeu, joueurs []Agents.Joueur, win bool) {
+func GameEnd(plateauInitial Agents.Jeu, joueurs []Agents.Joueur) {
 	var message Agents.Message
-	if !win {
-		message = Agents.Message{joueurs, plateauInitial, "C'est la fin du jeu! Les joueurs restants sont mort de faim et/ou de soif", "gameEnd"}
-	} else {
-		message = Agents.Message{joueurs, plateauInitial, "C'est la fin du jeu! ", "gameEnd"}
-	}
+	message = Agents.Message{joueurs, plateauInitial, "C'est la fin du jeu! ", "gameEnd"}
 	addMessage(message)
 	time.Sleep(durationSleep)
 }
@@ -247,6 +243,7 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 		typeAction := 0
 		nbRecolte := 0
 		//Action des joueurs
+		fmt.Println("liste joueurs :%v", joueurs)
 		for i := 0; i < nbJoueurVivants; i++ {
 			fmt.Println(joueurJouant.Nom, ", c'est à toi !")
 			profile = append(profile, joueurJouant.Prefs)
@@ -259,31 +256,45 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 		}
 		//Vote
 		if (plateau.StockEau > 0) && (plateau.StockNourriture > 0) {
+			fmt.Println("-- DEBUT VOTE EAU--")
+			fmt.Println("Eau = ", plateau.StockEau)
+			fmt.Println("NBJoueurVivants = ", nbJoueurVivants)
 			if plateau.StockEau < nbJoueurVivants {
 				nbDePersonneATue := nbJoueurVivants - plateau.StockEau
 				IDMort := Agents.Vote(profile, nbDePersonneATue)
-				for i := 0; i < nbJoueurVivants; i++ {
+				for i, _ := range joueurs {
 					for _, val := range IDMort {
 						if joueurs[i].ID == val {
 							joueurs[i].EstMort = true
 							fmt.Println(joueurs[i].Nom + " a été tué")
 							DeathPlayer(plateau, joueurs, i)
+							profile = Agents.RemoveDeadInProfile(profile, joueurs[i].ID)
 							nbJoueurVivants--
 						}
 					}
 				}
 			}
 			plateau.StockEau = plateau.StockEau - nbJoueurVivants
+			if plateau.StockEau < 0 {
+				plateau.StockEau = 0
+			}
+			fmt.Println("NBJoueurVivants = ", nbJoueurVivants)
+			fmt.Println("Eau = ", plateau.StockEau)
+			fmt.Println("-- FIN VOTE EAU--")
 
+			fmt.Println("-- DEBUT VOTE NOURRITURE--")
+			fmt.Println("Nourriture = ", plateau.StockNourriture)
+			fmt.Println("NBJoueurVivants = ", nbJoueurVivants)
 			if plateau.StockNourriture < nbJoueurVivants {
 				nbDePersonnesATue := nbJoueurVivants - plateau.StockNourriture
 				IDMort := Agents.Vote(profile, nbDePersonnesATue)
-				for i := 0; i < nbJoueurVivants; i++ {
+				for i, _ := range joueurs {
 					for _, val := range IDMort {
 						if joueurs[i].ID == val {
 							joueurs[i].EstMort = true
 							fmt.Println(joueurs[i].Nom + " a été tué")
 							DeathPlayer(plateau, joueurs, i)
+							profile = Agents.RemoveDeadInProfile(profile, joueurs[i].ID)
 							nbJoueurVivants--
 						}
 					}
@@ -291,30 +302,44 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 			}
 
 			plateau.StockNourriture = plateau.StockNourriture - nbJoueurVivants
+			if plateau.StockNourriture < 0 {
+				plateau.StockNourriture = 0
+			}
+			fmt.Println("NBJoueurVivants = ", nbJoueurVivants)
+			fmt.Println("Nourriture = ", plateau.StockNourriture)
+			fmt.Println("-- FIN VOTE NOURRITURE--")
 
+			fmt.Println("-- DEBUT VOTE RADEAU--")
+			fmt.Println("Radeau = ", plateau.PlaceRadeau)
+			fmt.Println("NBJoueurVivants = ", nbJoueurVivants)
 			if (plateau.PlaceRadeau <= 0) && (plateau.Meteo == 4) {
 				for i, val := range joueurs {
 					if val.EstMort == false {
 						joueurs[i].EstMort = true
 						fmt.Println(joueurs[i].Nom + " a été tué")
 						DeathPlayer(plateau, joueurs, i)
+						profile = Agents.RemoveDeadInProfile(profile, joueurs[i].ID)
 						nbJoueurVivants--
 					}
 				}
 			} else if (plateau.PlaceRadeau < nbJoueurVivants) && (plateau.Meteo == 4) {
 				nbDePersonneATue := nbJoueurVivants - plateau.PlaceRadeau
 				IDMort := Agents.Vote(profile, nbDePersonneATue)
-				for i := 0; i < nbJoueurVivants; i++ {
+				for i, _ := range joueurs {
 					for _, val := range IDMort {
 						if joueurs[i].ID == val {
 							joueurs[i].EstMort = true
 							fmt.Println(joueurs[i].Nom + " a été tué")
 							DeathPlayer(plateau, joueurs, i)
+							profile = Agents.RemoveDeadInProfile(profile, joueurs[i].ID)
 							nbJoueurVivants--
 						}
 					}
 				}
 			}
+			fmt.Println("NBJoueurVivants = ", nbJoueurVivants)
+			fmt.Println("Radeau = ", plateau.PlaceRadeau)
+			fmt.Println("-- FIN VOTE EAU--")
 
 			RoundEnd(plateau, joueurs)
 
@@ -327,14 +352,23 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 						SurvivePlayer(plateau, joueurs, id)
 					}
 				}
-				GameEnd(plateau, joueurs, true)
+				GameEnd(plateau, joueurs)
 			}
 		} else {
-			fmt.Println("Les joueurs restants sont mort de faim et/ou de soif")
-			GameEnd(plateau, joueurs, false)
+			fmt.Println("Il n'y a pas assez de nourriture et ou d'eau")
+			for i, val := range joueurs {
+				if val.EstMort == false {
+					joueurs[i].EstMort = true
+					fmt.Println(joueurs[i].Nom + " a été tué")
+					DeathPlayer(plateau, joueurs, i)
+					profile = Agents.RemoveDeadInProfile(profile, joueurs[i].ID)
+					nbJoueurVivants--
+				}
+			}
+			GameEnd(plateau, joueurs)
 		}
 	}
-	GameEnd(plateau, joueurs, true)
+	GameEnd(plateau, joueurs)
 }
 
 func main() {

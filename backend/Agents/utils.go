@@ -81,19 +81,21 @@ func CheckTours(nbTours int) error {
 }
 
 func Vote(profile [][]int, nbDePersonneATue int) []int {
-	bestAlts, _ := MajoritySCF(profile)
+	bestAlts, _ := BordaSCF(profile)
 	return bestAlts[:nbDePersonneATue]
 }
 
-func MajoritySWF(p [][]int) (count map[int]int, err error) {
-	count = make(map[int]int)
-	for i := 0; i < len(p); i++ {
-		alterPref := p[i][0]
-		_, ok := count[alterPref]
-		if ok {
-			count[alterPref] = count[alterPref] + 1
-		} else {
-			count[alterPref] = 1
+func BordaSWF(p [][]int) (map[int]int, error) {
+	count := make(map[int]int)
+	var err error
+	nbAlter := len(p[0])
+	for i := 0; i < nbAlter; i++ {
+		count[p[0][i]] = nbAlter - i - 1
+	}
+	nbVotant := len(p)
+	for i := 1; i < nbVotant; i++ {
+		for j := 0; j < nbAlter; j++ {
+			count[p[i][j]] = count[p[i][j]] + nbAlter - j - 1
 		}
 	}
 
@@ -102,16 +104,17 @@ func MajoritySWF(p [][]int) (count map[int]int, err error) {
 	for alt := range count {
 		alts = append(alts, alt)
 	}
-	countTb := TieBreak(alts)
+	count_tb := TieBreak(alts)
 	const N = 100
+	//Score(x)=N∗ScoreSWF(x)+ScoreTieBreak(x)
 	for alt := range count {
-		count[alt] = N*count[alt] + countTb[alt]
+		count[alt] = N*count[alt] + count_tb[alt]
 	}
 	return count, err
 }
 
-func MajoritySCF(p [][]int) (bestAlts []int, err error) {
-	count, _ := MajoritySWF(p)
+func BordaSCF(p [][]int) (bestAlts []int, err error) {
+	count, _ := BordaSWF(p)
 	bestAlts = MaxCount(count)
 	return bestAlts, err
 }
@@ -165,4 +168,22 @@ func Contains(list []int, a int) bool {
 		}
 	}
 	return false
+}
+
+func Remove(slice []int, id int) []int {
+	var newSlice []int
+	for s, val := range slice {
+		if val == id {
+			newSlice = append(slice[:s], slice[s+1:]...)
+		}
+	}
+	return newSlice
+}
+
+func RemoveDeadInProfile(p [][]int, id int) [][]int {
+	var newProfile [][]int
+	for _, val := range p {
+		newProfile = append(newProfile, Remove(val, id))
+	}
+	return newProfile
 }
