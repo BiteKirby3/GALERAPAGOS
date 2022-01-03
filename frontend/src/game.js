@@ -43,14 +43,17 @@ componentDidMount() {
     };
     client.onmessage = (message) => {
       var obj = JSON.parse(message.data)
-      console.log(obj)
-      this.setState({ messages : this.state.messages.concat((obj.Description)),
-        stockBois : obj.Plateau.StockBois,
-        stockEau : obj.Plateau.StockEau,
-        StockNourriture : obj.Plateau.StockNourriture,
-        PlaceRadeau :obj.Plateau.PlaceRadeau,
-        currentRound : obj.Plateau.NbTour
-      })
+      if(obj.TypeEvent !== "empty"){
+          console.log(obj)
+          this.setState({ messages : this.state.messages.concat((obj.Description)),
+            stockBois : obj.Plateau.StockBois,
+            stockEau : obj.Plateau.StockEau,
+            StockNourriture : obj.Plateau.StockNourriture,
+            PlaceRadeau :obj.Plateau.PlaceRadeau,
+            currentRound : obj.Plateau.NbTour
+        })
+      }
+
       
       if (obj.TypeEvent === "gameStart"){
         for (var i = 0; i <obj.ListJoueurs.length; i++) {
