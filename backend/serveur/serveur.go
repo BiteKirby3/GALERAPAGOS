@@ -15,7 +15,7 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-var durationSleep = 8000 * time.Millisecond
+var durationSleep = 2 * time.Second
 
 type Player struct {
 	Id           int
@@ -98,6 +98,12 @@ func (s *Serveur) React(ws *websocket.Conn) {
 					if countMessageSend < len(messages) {
 						sendMessage(messages[countMessageSend], ws, err)
 						countMessageSend++
+					} else {
+						time.Sleep(100 * time.Millisecond)
+						var desc []Agents.Joueur
+						var jeu Agents.Jeu
+						m := Agents.Message{desc, jeu, "Message to keep connection open", "empty"}
+						sendMessage(m, ws, err)
 					}
 				}
 			}
@@ -112,7 +118,6 @@ func addMessage(m Agents.Message) {
 }
 
 func sendMessage(m Agents.Message, ws *websocket.Conn, err error) {
-	fmt.Println("Send message" + m.Description)
 	marshalledMessage, errMarshal := json.Marshal(m)
 	if errMarshal != nil {
 		fmt.Println("Can't marshal message")
@@ -230,7 +235,6 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 		if plateau.TourActuel == 1 {
 			premierjoueur = joueurs[0]
 			indicePremier = 0
-			FirstPlayer(plateau, joueurs, indicePremier)
 		} else {
 			premierjoueur, indicePremier = Agents.AuTourDe(joueurs, premierjoueur)
 			FirstPlayer(plateau, joueurs, indicePremier)
@@ -248,7 +252,9 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 			plateau, typeAction, nbRecolte = Agents.Joue(plateau, joueurJouant, nbJoueurVivants)
 			ActionPlayer(plateau, joueurs, indiceJoueur, typeAction, nbRecolte)
 			joueurJouant, indiceJoueur = Agents.AuTourDe(joueurs, joueurJouant)
-			NextPlayer(plateau, joueurs, indiceJoueur)
+			if i != nbJoueurVivants-1 {
+				NextPlayer(plateau, joueurs, indiceJoueur)
+			}
 		}
 		//Vote
 		if (plateau.StockEau > 0) && (plateau.StockNourriture > 0) {
@@ -285,7 +291,16 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 
 			plateau.StockNourriture = plateau.StockNourriture - nbJoueurVivants
 
-			if (plateau.PlaceRadeau < nbJoueurVivants) && (plateau.Meteo == 4) {
+			if (plateau.PlaceRadeau <= 0) && (plateau.Meteo == 4) {
+				for i, val := range joueurs {
+					if val.EstMort == false {
+						joueurs[i].EstMort = true
+						fmt.Println(joueurs[i].Nom + " a été tué")
+						DeathPlayer(plateau, joueurs, i)
+						nbJoueurVivants--
+					}
+				}
+			} else if (plateau.PlaceRadeau < nbJoueurVivants) && (plateau.Meteo == 4) {
 				nbDePersonneATue := nbJoueurVivants - plateau.PlaceRadeau
 				IDMort := Agents.Vote(profile, nbDePersonneATue)
 				for i := 0; i < nbJoueurVivants; i++ {
@@ -309,15 +324,16 @@ func Simulation(joueurs []Agents.Joueur, nbTours int, nbJoueurs int) {
 					if !val.EstMort {
 						fmt.Println(val.Nom + " a survécu")
 						SurvivePlayer(plateau, joueurs, id)
-						GameEnd(plateau, joueurs, true)
 					}
 				}
+				GameEnd(plateau, joueurs, true)
 			}
 		} else {
 			fmt.Println("Les joueurs restants sont mort de faim et/ou de soif")
 			GameEnd(plateau, joueurs, false)
 		}
 	}
+	GameEnd(plateau, joueurs, true)
 }
 
 func main() {
