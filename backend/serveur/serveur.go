@@ -15,7 +15,7 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-var durationSleep = 2 * time.Second
+var durationSleep = 5000 * time.Millisecond
 
 type Player struct {
 	Id           int
