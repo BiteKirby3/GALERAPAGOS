@@ -51,7 +51,7 @@ func (s *Serveur) React(ws *websocket.Conn) {
 		//Receive message from front or Send message to front
 		err = websocket.Message.Receive(ws, &reply)
 		if err != nil {
-			fmt.Println("Can't receive")
+			//fmt.Println("Can't receive")
 		} else {
 			fmt.Println("Received back from client: " + reply)
 
@@ -91,6 +91,7 @@ func (s *Serveur) React(ws *websocket.Conn) {
 				fmt.Println(responsePlayers)
 
 			} else if responseMap["fromPage"] == "simulation_connexion" { //If the request is sended to server when the user arrives at the Simulation page : start the simulation of the Galerapagos Game and send any messages that we want to display in the front
+				time.Sleep(2000 * time.Millisecond)
 				countMessageSend := 0
 				messages = make([]Agents.Message, 0)
 				go Simulation(s.listPlayers, s.nbTurns, s.nbPlayers)

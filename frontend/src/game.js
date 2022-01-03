@@ -26,7 +26,8 @@ class Game extends React.Component {
         stockBois : 0,
         stockEau : 0,
         StockNourriture : 0,
-        PlaceRadeau :0 
+        PlaceRadeau :0 ,
+        nbMort:0
     };
 
 
@@ -122,7 +123,7 @@ componentDidMount() {
             }
           }*/
         }
-        this.setState()
+        this.setState({nbMort:this.state.nbMort+1})
       } else if (obj.TypeEvent === "roundEnd"){
         this.setState({currentMeteoImageUrl : "question_mark.gif"})
       } else if (obj.TypeEvent === "constructRaft"){
@@ -163,7 +164,7 @@ updatePlayer(index, attributes){
         
         <div className="scrollmenu">
         <div className="players">
-          <label>Joueurs restants :</label>
+          <label>Joueurs :</label>
           <ul className="no-bullets">
               {this.state.players.map((player) => (
                 <div className="flex-container">
